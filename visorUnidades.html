@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8">
+        <title>Resultados</title>
+        <meta name="description" content="redlab">
+        <meta name="author" content="redlab">
+		
+		<link rel="shortcut icon" href="img/favicon.ico">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/visorUnidades.css">
+        
+
+        <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+       
+        <script src="js/bootstrap.min.js"></script>
+		
+      <script type="text/javascript">
+	  var arregloPHP ; // en arreglo original
+	  var segundoAcceso=false; // se cambia a true cueando es mayor a un acceso
+		
+		function getCleanedString(cadena){
+		
+		  var temporalCadena = cadena.toLowerCase();
+		   
+		   temporalCadena = temporalCadena.replace(/á/gi,"a");
+		   temporalCadena = temporalCadena.replace(/é/gi,"e");
+		   temporalCadena = temporalCadena.replace(/í/gi,"i");
+		   temporalCadena = temporalCadena.replace(/ó/gi,"o");
+		   temporalCadena = temporalCadena.replace(/ú/gi,"u");
+		   temporalCadena = temporalCadena.replace(/ñ/gi,"n");
+		   
+		   return temporalCadena;
+		}
+		
+		function llenarTabla(){
+		
+		
+			if(segundoAcceso){
+				$("#tabla").empty();
+			   var rows = "";
+			   var total = 1;
+			   var banEncuestado = "";
+			   var ordenar = $("#filtroUnidad").val().trim().replace(/(\s\s+)/g,' ');
+				
+			   var ordenarArray = ordenar.length > 0 ? ordenar.split(' ') : [];
+			   var mostrar =  true;
+			  
+			   arregloPHP.forEach(function(row){
+				   banEncuestado = row.esEncuestado ==1 ? "Si": "no";
+				   mostrar = true;
+				   
+				   if(ordenar.length > 0){
+										
+						ordenarArray.forEach(function(valor){
+							mostrar = getCleanedString(row.idCliente+' '+row.txtNombre).indexOf(getCleanedString(valor))==-1 ? false : mostrar; 
+							
+						});
+					}
+					
+					if(mostrar || ordenar.length ==0 ){
+						rows += "<tr>"+
+						"<td>"+row.idCliente+"</td>"+ 
+						"<td>"+row.req_codigo+"</td>"+
+						"<td>"+row.txtNombre+"</td>"+
+						"<td>"+row.txtResponsable+"</td>"+
+						"<td>"+row.idProducto+"</td>"+
+						"<td>"+banEncuestado+"</td>"+
+						"</tr>"
+						total ++;
+						}
+			   });
+			   
+			   $("#tabla").append(rows);
+			} else {
+			
+				segundoAcceso= true
+			}
+		}
+		
+		
+		$(function(){
+			 var query = window.location.search.substring(1);
+			 
+			 $.ajax({
+					Method: 'POST',
+			        url: 'php/detalleCliente.php',
+				 	dataType: 'json'			
+				}).done(function(data){
+					arregloPHP = data;			
+			    	//console.log(arregloPHP);
+				     
+					llenarTabla();
+				 
+			 }).fail(function(error){
+				document.getElementById("label").innerHTML = 'Informaci&oacute;n no disponible por el momento';
+				 console.log('ERROR');
+				 console.log(error);
+				 
+			 });
+											
+			$('input').keypress(function(e){
+				if(e.which == 13){
+				  return false;
+				}
+				});
+							
+			  
+			  $("#filtroUnidad").on('keyup', llenarTabla).keyup();
+			 $('th').css('padding','2px 0px 2px 0px');
+			});
+        </script>
+    </head>
+    <body >
+           
+        <div  id="filtrar">
+								
+                                    <input type="text" class="form-control" id="filtroUnidad" name="filtroUnidad" placeholder="Filtrar por idClente o Unidad">
+                                    <br>
+                                </div>
+								
+        <div class="container" style="padding:0px">
+            <div class="starter-template">
+			<br/><br/><br/>
+							
+				<div class="table-responsive">
+				 <table id="tabla-contenido" class="table table-bordered" style="margin: 1% 0% 0% 0%;">
+				 <thead>
+                    <tr class="warning" style="font-size:12px">
+                        <th>IdCliente</th>
+						<th >C&oacute;digo</th>
+						<th >Nombre</th>
+						<th>Responsable</th>
+						<th>Producto</th>
+						<th>Es encuestado?</th>
+												
+                    </tr>
+				</thead>
+				<tbody id="tabla">
+				</tbody>
+				
+				 </table>
+				</div> 
+				
+				
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+            
+			<br>
+			<br>
+			<br>
+			<br>
+            <div class="tip" id="tip"></div>
+        </div><!-- /.container -->
+        
+
+    </body>
+
+</html>

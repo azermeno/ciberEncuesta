@@ -1,0 +1,28 @@
+finput, input[placeholder]{
+                
+                text-align:center;
+
+						}
+.centrado{
+				text-align:center;
+				
+		}
+		th{
+			padding: 2px 0px 2px 0px;
+			text-align:center;
+		}
+h3{
+				text-align: center;
+				
+				padding-top: 20px;
+	}
+	
+.starter-template {
+		    padding-top: 10%;
+	}
+	
+
+select {
+	margin-bottom: 3%;
+
+}

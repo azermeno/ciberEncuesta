@@ -1,0 +1,24 @@
+
+.centrado{
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+}
+
+#jefeLab , #unidad , #producto, h2{
+	
+	
+	color:blue;
+}
+
+
+h4 {
+	margin: 8px;
+	
+}
+
+textarea {
+	
+	margin-bottom : 10px;
+}
