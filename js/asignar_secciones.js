@@ -222,7 +222,9 @@ $(function () {
 				  
 				});
 			} else {
+				
 				banderaGuardarCamio = false;
+				acomodarPrioridad(banderaGuardarCamio);
 				$("#actualiza").hide();
 				$("#guardarCambios").hide();
 				campoEstado.forEach(function(entry){

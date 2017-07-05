@@ -74,7 +74,7 @@
 				
 			}
 			
-			if($obtener_resultados!=2){
+		if($obtener_resultados!=2){
 				$temps = array();
 			
 				$sql = "SELECT p.* FROM pregunta as p,area as a WHERE p.fk_area=a.pk_area && a.fk_puesto={$puesto}";

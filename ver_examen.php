@@ -113,7 +113,12 @@ session_start();
 											<br>
 											  <label style="font-size:150%" id="estadoEncuesta"></label> 
 												<br>											  
-											  <label style="font-size:150%" id="estadoEncuestaBoton"></label>  
+											  <label style="font-size:150%" id="estadoEncuestaBoton"></label>
+												<button id="actualiza" type="button" class="btn btn-warning" style="display:none"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar prioridades</button>
+												<div id="guardarCambios" style="display:none">
+												<button id="guarda" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Guardar</button>
+												<button id="cancelar" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
+												</div>											  
 											</div>
 											
 										</div>

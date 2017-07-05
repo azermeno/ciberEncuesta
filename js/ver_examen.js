@@ -1,4 +1,5 @@
 var informacion = [];
+var ponderaciones = [];
 var banIdentificador = false; 
 	function obtenerPuestos(){
 		var selectExamen ='';
@@ -232,7 +233,7 @@ var banIdentificador = false;
 					data:{puesto:puestoEncuesta}
 					
 				}).done(function(data){
-			
+					console.log(data);
 				    var cuestionario = '';
 					
 					if(data.preguntas.length > 0){
@@ -241,12 +242,14 @@ var banIdentificador = false;
 						verEstado('Encuesta');
 								 
 						var numero = 1;
-						var comentario = '';
+						
+						var respuesta = '';
 						data.preguntas.forEach(function(entry){
 							if(typeof(entry['area']) != 'undefined'){
 								if(cuestionario==''){
 									
-									cuestionario += '<div class="well" style="text-align:center">';
+									cuestionario += '<div class="well ponderacion" style="text-align:center"><h3><b>Ponderaci&oacute;n de la secci&oacute;n:&nbsp; <span id="A'+entry.fk_puesto+'">'+entry.puestoPonderacion+'</span></b></h3>';
+									ponderaciones['"A'+entry.fk_puesto+'"'] = entry.puestoPonderacion;
 									
 								} else {
 									
@@ -254,31 +257,36 @@ var banIdentificador = false;
 									
 								}
 								cuestionario += '<h2>'+ entry['area'] +'</h2>';
+								
 							} else if(typeof(entry['fk_area']) != 'undefined'){ //es pregunta
-								comentario = entry['banComentario'] == 1 ? 
-								'<span style="color: blue">  (Se permite comentario)</span>':'';
+								
 								if(numero > 1){
-									cuestionario += '</tr></table></div>';
+									cuestionario += '</table></div>';
 									
 								}
 								cuestionario += '</div><div class="well">';
-								cuestionario += '<h3>'+numero+'.- ' + entry['pregunta'] + comentario + '</h3>';
-								cuestionario += '<div class="table-responsive"><table class="table">'+
-							    '<tr>';
+								cuestionario += '<h3>'+numero+'.- ' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;<label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
+								cuestionario += '<div class="table-responsive"><table class="table">';
 								numero++;
+								ponderaciones['"P'+entry.pk_pregunta+'"'] = entry.preguntaPonderacion;
+								
 							} else { //es respuesta
+								
+								respuesta = entry.respuesta == '.' ? "(SE PERMITE COMENTARIO)" : entry.respuesta;
 									
-								cuestionario += '<th><h5><label for="'+entry['pk_respuesta']+'">'+
+								cuestionario += '<tr><th><h5><label for="'+entry['pk_respuesta']+'">'+
 								'<span style="color:blue" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>&nbsp;'+
-								entry['respuesta']+'</label></h5></th>';
+								respuesta+'</label></h5></th><th class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="R'+entry.pk_respuesta+'">'+entry.respuestaPonderacion+'</span></th></tr>';
+								
+								ponderaciones['"R'+entry.pk_respuesta+'"'] = entry.respuestaPonderacion;
 								
 							}
 						});
-							cuestionario += "</tr></table></div>";
+							cuestionario += "</table></div>";
 						
 						$("#preguntasEncuesta").append(cuestionario);
 						$("#preguntasEncuesta").show();
-						
+						console.log(ponderaciones);
 					} else {
 						
 						alert("Por el momento no esta disponible el apartado de encuestas, intente m\u00E1s tarde (Puedes intentarlo nuevamente.)");

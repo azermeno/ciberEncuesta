@@ -20,8 +20,8 @@
 			$returnJs = array();
 						
 				
-				$sql = "SELECT * FROM area WHERE fk_puesto={$puesto}";
-				//error_log($sql);			
+				$sql = "SELECT a.*,p.puestoPonderacion,p.prioridad FROM area as a, puesto as p WHERE a.fk_puesto=p.pk_puesto and p.pk_puesto={$puesto}";
+				error_log($sql);			
 				$result = $conn->query($sql);
 				if ($result->num_rows > 0) {
 						
@@ -39,7 +39,7 @@
 									  while($temp = $result1->fetch_assoc()) {
 												
 											$respuestas = array();
-											$sql = "SELECT pk_respuesta,fk_pregunta,respuesta,correcta FROM respuesta WHERE fk_pregunta={$temp['pk_pregunta']} ORDER BY respuestaOrden";
+											$sql = "SELECT pk_respuesta,fk_pregunta,respuesta,correcta,respuestaPonderacion FROM respuesta WHERE fk_pregunta={$temp['pk_pregunta']} ORDER BY respuestaOrden";
 											//error_log($sql);
 											 $result2 = $conn->query($sql);
 									

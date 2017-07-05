@@ -13,7 +13,7 @@
 			$conn->set_charset("utf8");
 				
 			$returnJs['puesto'] = array();
-			//$sql = "SELECT * FROM puesto WHERE pk_puesto > 0";
+			
 			$sql = "SELECT Pu.interno,Pu.pk_puesto,Pu.activo,
 			Pu.limite_minutos,Pu.puesto,Pu.conPromedio, (select count(Pre.pk_pregunta) from
 			area as a, pregunta as Pre WHERE a.fk_puesto=pk_puesto && Pre.fk_area=a.pk_area ) AS
