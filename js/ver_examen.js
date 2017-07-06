@@ -249,7 +249,7 @@ var banIdentificador = false;
 								if(cuestionario==''){
 									
 									cuestionario += '<div class="well ponderacion" style="text-align:center"><h3><b>Ponderaci&oacute;n de la secci&oacute;n:&nbsp; <span id="A'+entry.fk_puesto+'">'+entry.puestoPonderacion+'</span></b></h3>';
-									ponderaciones['"A'+entry.fk_puesto+'"'] = entry.puestoPonderacion;
+									ponderaciones['A'+entry.fk_puesto] = entry.puestoPonderacion;
 									
 								} else {
 									
@@ -268,7 +268,7 @@ var banIdentificador = false;
 								cuestionario += '<h3>'+numero+'.- ' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;<label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
 								cuestionario += '<div class="table-responsive"><table class="table">';
 								numero++;
-								ponderaciones['"P'+entry.pk_pregunta+'"'] = entry.preguntaPonderacion;
+								ponderaciones['P'+entry.pk_pregunta] = entry.preguntaPonderacion;
 								
 							} else { //es respuesta
 								
@@ -278,7 +278,7 @@ var banIdentificador = false;
 								'<span style="color:blue" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>&nbsp;'+
 								respuesta+'</label></h5></th><th class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="R'+entry.pk_respuesta+'">'+entry.respuestaPonderacion+'</span></th></tr>';
 								
-								ponderaciones['"R'+entry.pk_respuesta+'"'] = entry.respuestaPonderacion;
+								ponderaciones['R'+entry.pk_respuesta] = entry.respuestaPonderacion;
 								
 							}
 						});
@@ -286,7 +286,6 @@ var banIdentificador = false;
 						
 						$("#preguntasEncuesta").append(cuestionario);
 						$("#preguntasEncuesta").show();
-						console.log(ponderaciones);
 					} else {
 						
 						alert("Por el momento no esta disponible el apartado de encuestas, intente m\u00E1s tarde (Puedes intentarlo nuevamente.)");
@@ -303,6 +302,43 @@ var banIdentificador = false;
 				
 				
 		});
+		
+		$("#actualiza").on("click",habilitarSubmit);
+		
+		function habilitarSubmit(){
+			     
+				$("#actualiza").hide();
+				$("#guardarCambios").show();
+				 acomodarPrioridad(true);
+			
+		};
+		
+		function acomodarPrioridad(editable){
+			
+						console.log(ponderaciones);
+			var pk = '';
+			var valor = '';			
+			for(var index in ponderaciones) { 
+				if (ponderaciones.hasOwnProperty(index)) {
+					console.log(typeof(index));
+					pk = index.substring(2,4);
+					valor = ponderaciones[index];
+					
+					console.log(index + "---"+valor+" = "+pk)
+					
+					if(editable){
+
+						$("#"+index).html('<input type="number" name="'+pk+'" style="text-align:center;width:55px;" value="'+valor+'">');
+					} else {
+
+						$("#"+index).html(valor);
+
+					}
+				}
+			} 
+			
+		};
+		
 				 $("#puestoExamen").change(function(){
 					   $("#puestoEncuesta").val(0);
 						$("#verEstado").hide();

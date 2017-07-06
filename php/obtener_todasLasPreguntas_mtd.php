@@ -50,7 +50,6 @@
 														while($row = $result2->fetch_assoc()) {
 															$returnJs['preguntas'][]=$row;
 														}
-													
 											}
 											
 										}
