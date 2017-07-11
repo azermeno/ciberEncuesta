@@ -233,7 +233,7 @@ var banIdentificador = false;
 					data:{puesto:puestoEncuesta}
 					
 				}).done(function(data){
-					console.log(data);
+					
 				    var cuestionario = '';
 					
 					if(data.preguntas.length > 0){
@@ -244,6 +244,7 @@ var banIdentificador = false;
 						var numero = 1;
 						
 						var respuesta = '';
+						ponderaciones = [];
 						data.preguntas.forEach(function(entry){
 							if(typeof(entry['area']) != 'undefined'){
 								if(cuestionario==''){
@@ -313,22 +314,65 @@ var banIdentificador = false;
 			
 		};
 		
-		function acomodarPrioridad(editable){
+		$("#cancelar").on("click",cancelar); 
+		
+		function cancelar(){
 			
-						console.log(ponderaciones);
-			var pk = '';
+			$("#actualiza").show();
+			$("#guardarCambios").hide();
+			acomodarPrioridad(false);
+			 			
+		};
+		
+		$("#guarda").on("click",mandarPonderaciones);
+		
+		function mandarPonderaciones(){
+			console.log("Mando");
+		 $("#form-ponderacion").submit();	
+			
+		};
+		
+		$("#form-ponderacion").submit(function(event){
+			console.log("Submit");
+			event.preventDefault();
+			var ponderacion = $(this).serialize();
+							
+			console.log(ponderacion);
+			
+			$.ajax({
+				method : "POST",
+				url : "php/actualizar_ponderacion_mtd.php",
+				dataType : "json",
+				data : ponderacion
+			}).done(function(data){
+				
+				ponderaciones = data.ponderacion;
+				console.log(ponderaciones);
+				console.log(data);
+				alert("Se realizo el cambio correctamente");
+				cancelar();
+				
+			}).fail(function(error){
+				
+				console.log(error);
+				alert("Por el momento no esta activa esta funcionalidad, intente m\u00E1s tarde");
+				
+			});
+			
+			
+		});
+		
+		function acomodarPrioridad(editable){
+		
 			var valor = '';			
 			for(var index in ponderaciones) { 
 				if (ponderaciones.hasOwnProperty(index)) {
-					console.log(typeof(index));
-					pk = index.substring(2,4);
-					valor = ponderaciones[index];
 					
-					console.log(index + "---"+valor+" = "+pk)
+					valor = ponderaciones[index];
 					
 					if(editable){
 
-						$("#"+index).html('<input type="number" name="'+pk+'" style="text-align:center;width:55px;" value="'+valor+'">');
+						$("#"+index).html('<input type="number" name="'+index+'" style="text-align:center;width:55px;" value="'+valor+'">');
 					} else {
 
 						$("#"+index).html(valor);
@@ -340,7 +384,8 @@ var banIdentificador = false;
 		};
 		
 				 $("#puestoExamen").change(function(){
-					   $("#puestoEncuesta").val(0);
+					    
+					    $("#puestoEncuesta").val(0);
 						$("#verEstado").hide();
 						$("#preguntas").html('');
 						$("#verEstadoEncuesta").hide();
@@ -372,9 +417,12 @@ var banIdentificador = false;
 					
 				});
 				$("#puestoEncuesta").change(function(){
-					 $("#identificadoresExistenetes").val('0');
-					  $("#inputText").val('');
-					   $("#puestoExamen").val(0);
+				
+						$("#actualiza").show();
+						$("#guardarCambios").hide();
+						$("#identificadoresExistenetes").val('0');
+						$("#inputText").val('');
+						$("#puestoExamen").val(0);
 						$("#verEstadoEncuesta").hide();
 						$("#preguntasEncuesta").html('');
 						$("#verEstado").hide();

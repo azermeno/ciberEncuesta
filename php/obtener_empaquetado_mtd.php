@@ -15,8 +15,7 @@
 			$returnJs = array();
 			$unidad = isset($_POST['unidad']) ? $_POST['unidad'] : 0;
 			$estado = isset($_POST['estado']) ? $_POST['estado'] : 0;
-			$correcto = 1;
-						 
+			
 			$sql="SELECT e.* FROM empaquetado as e,unidad as u WHERE fk_unidad=u.pk_unidad && u.req_codigo={$unidad}";
 			$result = $conn->query($sql);
 			 if ($result->num_rows > 1){

@@ -20,9 +20,9 @@
 			$cliente = new SoapClient('http://localhost:82/wsActEncuesta.asmx?wsdl');
 			
 			$resultWebService = array();
-			$datos = array();
+			
 			// al mandar false nos regresa todas las unidades activas
-			$resultWebService = $cliente->PersonasEncuesta(false);
+			$resultWebService = $cliente->PersonasEncuesta(array("encuestado" => false));
 			
 			if(is_soap_fault($resultWebService)){
 			 $correcto = 0;

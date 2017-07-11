@@ -31,7 +31,8 @@
 						$resultWebService = array();
 						$datos = array();
 						//Al mandar true nos regresa sólo las unidades encuestadas activas
-						$resultWebService = $cliente->PersonasEncuesta(true);
+						
+						$resultWebService = $cliente->PersonasEncuesta(array("encuestado" => true));
 						
 						if(is_soap_fault($resultWebService)){
 						 $correcto = 0;
@@ -43,7 +44,7 @@
 						 
 						$sql = "SELECT m.*,u.req_codigo FROM mesEncuesta as m, aspirante as a, unidad as u WHERE m.fk_mes = {$returnJs['mes'][0]['pk_mes']} ".
 						       "AND a.fk_mesEncuesta=m.pk_mesEncuesta AND u.pk_unidad=m.fk_unidad GROUP BY m.pk_mesEncuesta;";
-						//error_log($sql);	  
+						  
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0) {
 							while($row = $result->fetch_assoc()){
@@ -61,7 +62,7 @@
 						" WHERE m.fk_mes = {$returnJs['mes'][0]['pk_mes']} AND a.fk_mesEncuesta=m.pk_mesEncuesta AND u.pk_unidad=m.fk_unidad ".
 						"AND asp.fk_mesEncuesta=m.pk_mesEncuesta AND c.fk_aspirante=asp.pk_aspirante AND c.comentario is not null AND".
 						" comentario !=''GROUP BY m.pk_mesEncuesta;";
-						//error_log($sql);	  
+						  
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0) {
 							while($row = $result->fetch_assoc()){

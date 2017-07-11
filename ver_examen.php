@@ -118,7 +118,7 @@ session_start();
 											  <br>
 												<button id="actualiza" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar ponderaci&oacute;n</button>
 												<div id="guardarCambios" style="display:none">
-												<button id="guarda" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Guardar</button>
+												<button id="guarda" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
 												<button id="cancelar" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
 												</div>											  
 											 </div>
@@ -130,8 +130,10 @@ session_start();
 							</form>
 							
 							<br>
+							<form  id="form-ponderacion" >
 							<div id="preguntasEncuesta" style="text-align:left; width: 80%; margin: 0 auto">
 							</div>
+							</form>
 
 						</div>
 					</div>

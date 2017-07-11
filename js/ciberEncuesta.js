@@ -71,14 +71,25 @@ function pulsar(e) {
 	$(function(){
 		
 	 var unidad = getQueryVariable('requiriente');
+	 
+	 //Solucion a la basura que se agrego al combo mes
+	 //*******************************************
+		 var fecha = new Date();
+		 var mesComparacion = (fecha.getMonth()+1).toString();// inicia de 0 a 11
+			 mesComparacion = mesComparacion.length == 1 ? "0"+mesComparacion : mesComparacion;
+		 var anioMes = fecha.getFullYear().toString() + mesComparacion;
+     //******************************
+	 
 	 var mes = getQueryVariable('encuesta');
+	
+
 	 var encuestaManual = getQueryVariable('manual');
 	 encuestaManual = encuestaManual == false ? 0 : encuestaManual;
 	 
 	 //Le asignamos al formulario el identificador de como se contesto
 	 $("#encuestaManual").val(encuestaManual);
 	 
-	 if(unidad && mes){
+	 if(unidad && mes == anioMes){
 		 
 	 $("#mes").append(mesAnterior(mes));
 		//alert("Puesto: "+puesto+ " mail: "+mail+" Nombre: "+name);
