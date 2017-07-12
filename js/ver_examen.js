@@ -327,18 +327,16 @@ var banIdentificador = false;
 		$("#guarda").on("click",mandarPonderaciones);
 		
 		function mandarPonderaciones(){
-			console.log("Mando");
+			
 		 $("#form-ponderacion").submit();	
 			
 		};
 		
 		$("#form-ponderacion").submit(function(event){
-			console.log("Submit");
+			
 			event.preventDefault();
 			var ponderacion = $(this).serialize();
-							
-			console.log(ponderacion);
-			
+						
 			$.ajax({
 				method : "POST",
 				url : "php/actualizar_ponderacion_mtd.php",
@@ -347,8 +345,6 @@ var banIdentificador = false;
 			}).done(function(data){
 				
 				ponderaciones = data.ponderacion;
-				console.log(ponderaciones);
-				console.log(data);
 				alert("Se realizo el cambio correctamente");
 				cancelar();
 				

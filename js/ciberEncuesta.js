@@ -66,8 +66,7 @@ function pulsar(e) {
 				 
 			 }
 			 return mes+anio;
-		 
-		}
+		 }
 	$(function(){
 		
 	 var unidad = getQueryVariable('requiriente');
@@ -82,7 +81,6 @@ function pulsar(e) {
 	 
 	 var mes = getQueryVariable('encuesta');
 	
-
 	 var encuestaManual = getQueryVariable('manual');
 	 encuestaManual = encuestaManual == false ? 0 : encuestaManual;
 	 

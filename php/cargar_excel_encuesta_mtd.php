@@ -1,5 +1,4 @@
 <?php
-
 // Start the session
 session_start();
 
@@ -36,15 +35,15 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 			$ciberEncuesta = strpos($nombreArchivo[0],'@');
 			$ponderacionEncuesta = 1;
 			$tempNombreArchivo = strpos($nombreArchivo[0],'-');
-					
+						
 			if($tempNombreArchivo < 5 && $tempNombreArchivo !== false){
 				$divideNombre = explode('-',$nombreArchivo[0]);
-				$ponderacionEncuesta = $ciberEncuesta == 0 ? substr($divideNombre[0], 1) : $divideNombre[0];
+				$ponderacionEncuesta = $ciberEncuesta === 0 ? substr($divideNombre[0], 1) : $divideNombre[0];
 				$nombreArchivo[0] = $divideNombre[1];
 			}
-			
-			$conn->query("INSERT INTO puesto(puesto,limite_minutos,conPromedio,puestoPonderacion)".
-			" VALUE('{$nombreArchivo[0]}',60,0,{$ponderacionEncuesta})");
+			$sql = "INSERT INTO puesto(puesto,limite_minutos,conPromedio,puestoPonderacion)".
+			" VALUE('{$nombreArchivo[0]}',60,0,{$ponderacionEncuesta});";
+			$conn->query($sql);
 			if($conn->affected_rows==1){
 				
 					$id_area=0;
@@ -99,8 +98,8 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 								$sql = "INSERT INTO pregunta(pregunta,fk_area,preguntaOrden,banComentario,preguntaPonderacion)". 
 							  " VALUE('{$pregunta}',{$id_area},{$ordenPregunta},{$banComentario},{$ponderacionPregunta});";
 							 
-							 $conn->query($sql);
-							  $ordenPregunta++;
+								$conn->query($sql);
+								$ordenPregunta++;
 							    if($conn->affected_rows == 1){
 							
 							      $id_pregunta=$conn->insert_id;
@@ -112,7 +111,6 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 											VALUE('{$file[$celda]}',0,{$id_pregunta},{$ordenRespuesta})");
 											if($conn->affected_rows!=1){
 												
-												
 												$correcto=false;
 												$conn->query("ROLLBACK");
 												$conn->close();									
@@ -122,8 +120,7 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 												
 										} else {
 										  break;
-
-										}
+										  }
 
 									}//fin foreach celda
 
@@ -133,9 +130,7 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 									$conn->query("ROLLBACK");
 									$conn->close();
 									break;
-
 								}
-			
 							} 
 							
 						}//fin foreach fila
@@ -156,7 +151,6 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 						header("Location: ../cargar_excel.php?error=Por el momento no es posible procesar el archivo (1), intente nuevamente(2)."); /* Redirect browser */
 					}
 						
-					
 				} else {
 					$conn->query("ROLLBACK");
 						$conn->close();
@@ -172,6 +166,4 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 		header("Location: ../cargar_excel.php?error=Debe seleccionar un archivo."); /* Redirect browser */
 		exit();
 	}
-
-
 ?>
