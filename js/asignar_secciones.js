@@ -68,14 +68,14 @@ var banIdentificador = false;
 			 
 			 alert("Debe seleccionar una unidad");
 		 } else {
-		 
+		 console.log('unidad: '+unidad+' ,estado: '+estado+',seccion: '+seccion+',accion: '+accion);
 		 $.ajax({
 					method : "POST",
 					url : "php/guardar_empaquetado_mtd.php",
 					dataType : "json",
 					data : {unidad:unidad,estado:estado,seccion:seccion,accion:accion}
 				}).done(function(data){
-					
+					console.log(data);
 					if(data.asignado == true){
 						//alert(seccion);
 						if(accion == 0){
@@ -158,31 +158,33 @@ $(function () {
 					dataType : "json",
 					data : {unidad:unidad,estado:estado}
 				}).done(function(data){
-					
+					console.log(data);
 					var banderaEncontrado;
 					campoEstado.forEach(function(entry){
 					
 						banderaEncontrado = false;
-							
-						data.empaquetado.forEach(function(dato){
-							
-							if(entry == dato.fk_puesto){
-								banderaEncontrado = true;
-							 if(dato.activo == 1){
-							 $("#"+entry).css("color","blue");
-							 $("#"+entry).html('Asignado');
-							 $("#agregar"+entry).hide();
-						     $("#quitar"+entry).show();
-							 } else {
-							 $("#"+entry).css("color","red");
-							 $("#"+entry).html('Sin asignar');
-							 $("#quitar"+entry).hide();
-							 $("#agregar"+entry).show();
-								 
-							 }
-							}
-						});
-							if(banderaEncontrado == false){
+						
+						if(typeof(data.empaquetado) !='undefined'){						
+							data.empaquetado.forEach(function(dato){
+								
+								if(entry == dato.fk_puesto){
+									banderaEncontrado = true;
+								 if(dato.activo == 1){
+								 $("#"+entry).css("color","blue");
+								 $("#"+entry).html('Asignado');
+								 $("#agregar"+entry).hide();
+								 $("#quitar"+entry).show();
+								 } else {
+								 $("#"+entry).css("color","red");
+								 $("#"+entry).html('Sin asignar');
+								 $("#quitar"+entry).hide();
+								 $("#agregar"+entry).show();
+									 
+								 }
+								}
+							});
+						}
+							if(banderaEncontrado === false){
 								
 						  	 $("#"+entry).css("color","red");
 							 $("#"+entry).html('Sin asignar');
