@@ -47,10 +47,10 @@ var banIdentificador = false;
 			 prioridad['"'+entry.pk_puesto+'"'] = entry.prioridad;
 			
 		  });
-						 
-						 $("#secciones").append(fila);
-						
-						$(".actualizar").on("click",agregarQuitar);
+			 
+			 $("#secciones").append(fila);
+			
+			$(".actualizar").on("click",agregarQuitar);
 						
 	};
 	
@@ -68,14 +68,14 @@ var banIdentificador = false;
 			 
 			 alert("Debe seleccionar una unidad");
 		 } else {
-		 console.log('unidad: '+unidad+' ,estado: '+estado+',seccion: '+seccion+',accion: '+accion);
+		
 		 $.ajax({
 					method : "POST",
 					url : "php/guardar_empaquetado_mtd.php",
 					dataType : "json",
 					data : {unidad:unidad,estado:estado,seccion:seccion,accion:accion}
 				}).done(function(data){
-					console.log(data);
+					
 					if(data.asignado == true){
 						//alert(seccion);
 						if(accion == 0){
@@ -158,7 +158,7 @@ $(function () {
 					dataType : "json",
 					data : {unidad:unidad,estado:estado}
 				}).done(function(data){
-					console.log(data);
+					
 					var banderaEncontrado;
 					campoEstado.forEach(function(entry){
 					
