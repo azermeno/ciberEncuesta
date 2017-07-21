@@ -1,10 +1,27 @@
     
-			var codigo = '6';
-			var unidad = '045JEFATURAGDL';
+			var codigo = '';
+			var unidad = '';
+			
+	function getQueryVariable(variable) {
 		
-		$(function(){
+	   var query = window.location.search.substring(1);
+	       query = window.atob(query);
+	   var vars = query.split("&");
+	   for (var i=0; i < vars.length; i++) {
+		   vars[i] = vars[i].replace(/=/, "|");
+		   var pair = vars[i].split("|",2);
+		   if(pair[0] == variable) {
+			   return pair[1];
+		   }
+	   }
+	   return false;
+	}		
 		
-			console.log(codigo+' -- '+unidad+"--- ");
+	$(function(){
+		
+		codigo = getQueryVariable('codigo');
+		unidad = getQueryVariable('unidad');
+		//if(codigo != "" && unidad != ""){
 			$.ajax({
 			 url : "php/verificadorCiberEncuesta.php",
 			 method : "POST",
@@ -13,28 +30,23 @@
 			
 			}).done(function(respuesta){
 				
-				console.log(respuesta);
 				var resultado = "";
 				if(respuesta.error == ""){
-				    resultado = respuesta.validacion.substring(1,respuesta.validacion.length-1).split("|");
-					console.log(resultado.length);
-					console.log(respuesta.validacion.substring(1,respuesta.validacion.length-1).split("|"));
+					resultado = respuesta.validacion.substring(1,respuesta.validacion.length-1).split("|");
+					
 					if(resultado.length == 3){
 						if(resultado[0] == 0){
 							
 						   $("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no debe de contestar por que ya contesto o por que no es tiempo de contestar, el rango de fecha es hasta el d&iacute;a 15 y con horario de 7am a 3pm.");
 							$(".alert").show();
-							 var datos = btoa("requiriente="+resultado[2]+"&encuesta="+resultado[1]);
-								window.location.replace("/ciberEncuestaPHP/ciberEncuesta.php?"+datos);
 							
 						} else {
 							
 								 var datos = btoa("requiriente="+resultado[2]+"&encuesta="+resultado[1]);
 								window.location.replace("/ciberEncuestaPHP/ciberEncuesta.php?"+datos);
-	
+
 						}
 					} else {
-						
 						
 						 $("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no tiene los datos correcto.");
 							$(".alert").show();
@@ -52,7 +64,12 @@
 				console.log(error);
 				console.log(error.statusText);
 			});
+		//} else {
 			
-		});
+		//	$("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no tiene los datos correcto.");
+			
+		//}
+		
+	});
     
 		

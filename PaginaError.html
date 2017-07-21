@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<title>Pagina de Error de Ciberencuesta</title>
+<script>
+		
+			var error = '0';
+			
+	function getQueryVariable(variable) {
+		
+	   var query = window.location.search.substring(1);
+	       query = window.atob(query);
+	   var vars = query.split("&");
+	   for (var i=0; i < vars.length; i++) {
+		   vars[i] = vars[i].replace(/=/, "|");
+		   var pair = vars[i].split("|",2);
+		   if(pair[0] == variable) {
+			   return pair[1];
+		   }
+	   }
+	   return false;
+	}		
+		
+	function captarError(){
+		
+		//error = getQueryVariable('error');
+		
+		if(error != ""){
+		
+			if(error == '1'){
+				document.getElementById('url').style.color = "red";
+			}
+			if(error == '2'){
+				document.getElementById('bat').style.color = "red";
+				}
+			if(error == '3'){
+				document.getElementById('ini').style.color = "red";
+			}
+			if(error == '4'){
+				document.getElementById('url').style.color = "red";
+			}
+			
+		}
+		
+	};
+</script>
+</head>
+
+<body onload="captarError()">
+<div align="center"><img src="img/errorConejo.jpeg"></div>
+<div class="descripcion" align="center">				
+	<h1>
+		Lamentablemente, sucedio un problema al tratar de llamar la cibernecuesta para verificar la satisfacci&oacute;n del cliente, favor de contactar a soporte para que realice las siguientes pruebas: 
+	</h1>
+    <p id="bat">
+		a) Verificar que exista el archivo de ciberencuesta.ini acompa&ntilde;ado del archivo bat que mando a ejecutar.
+	</p>
+    <p id="ini">
+		b) Dentro de la ciberencuesta.ini deben existir la definici&oacute;n de codigo de cliente (idcliente), url ( ip:puerto de la pagina ) y la ruta donde se ejecuta el chrome ( chromepath ).
+	</p>
+	<p id="url">
+		c) Favor de verificar que la pagina url puesta se tenga acceso.
+	</p>
+	<p id="variables">
+		d) Favor de verificar que el codigo de cliente sea el correcto y la sesi&oacute;n donde se ejecuta sea la correcta.
+	</p>	
+</div>
+</body>
+</html>
