@@ -134,7 +134,7 @@
 				}
 				
 					foreach($encuestas as $encuesta){	
-						$sql = "SELECT p.* FROM pregunta as p,area as a WHERE p.fk_area=a.pk_area && a.fk_puesto={$encuesta['fk_puesto']}";
+						$sql = "SELECT p.* FROM pregunta as p,area as a WHERE p.fk_area=a.pk_area && a.fk_puesto={$encuesta['fk_puesto']} and activo=1";
 						
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0) {

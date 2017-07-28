@@ -5,7 +5,8 @@
 	function getQueryVariable(variable) {
 		
 	   var query = window.location.search.substring(1);
-	       query = window.atob(query);
+	        console.log(query);
+	      // query = window.atob(query);
 	   var vars = query.split("&");
 	   for (var i=0; i < vars.length; i++) {
 		   vars[i] = vars[i].replace(/=/, "|");

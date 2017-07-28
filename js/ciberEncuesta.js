@@ -164,7 +164,7 @@ function pulsar(e) {
 								cuestionario += '</tr></table>';	
 								if(entry.banComentario == 1){
 									
-									cuestionario += '<textarea class="form-control" placeholder="........" rows="5" name="abierta/'+
+									cuestionario += '<textarea class="form-control" placeholder="........" rows="2" name="abierta/'+
 									entry['pk_pregunta']+'"></textarea>';
 									
 								}	
