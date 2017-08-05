@@ -175,7 +175,7 @@ function pulsar(e) {
 								
 							} else {
 								pk_puesto = entry['fk_puesto'];
-								cuestionario += '<div class="well" style="margin-bottom: 10px"><h4 style="margin: 0px;"><b>'+entry['puesto']+'</b></h4>'+
+								cuestionario += '<div class="well" style="margin-bottom: 10px"><h4 style="margin: 0px;"><b>'+entry['puesto'].toUpperCase()+'</b></h4>'+
 								'<tr></div><input type="hidden" name="ponderacion/'+entry['fk_puesto']+'" value="'+entry['puestoPonderacion']+'">';
 								
 							}
