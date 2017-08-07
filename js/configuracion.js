@@ -2,11 +2,13 @@
 			var codigo = '';
 			var unidad = '';
 			var ipGlobal = '';
+			var mensajeError='';
+			var banYaContesto = false;
 			
 	function getQueryVariable(variable) {
 		
 	   var query = window.location.search.substring(1);
-	        console.log(query);
+	      
 	      // query = window.atob(query);
 	   var vars = query.split("&");
 	   for (var i=0; i < vars.length; i++) {
@@ -214,14 +216,15 @@
     }
 	
 	 function validarSessionCodigo(codigoEnviado, unidadObtenida){
-		 
-		 
-		 if(codigo != "" && unidad != ""){
+		
+		 if(codigoEnviado != "" && unidadObtenida != ""){
 			$.ajax({
 			 url : "php/verificadorCiberEncuesta.php",
 			 method : "POST",
 			 dataType : "json",
-			 data : {codigo:codigo,unidad:unidad}
+			 async:false, 
+             cache:false,
+			 data : {codigo:codigoEnviado,unidad:unidadObtenida}
 			
 			}).done(function(respuesta){
 				
@@ -232,8 +235,9 @@
 					if(resultado.length == 3){
 						if(resultado[0] == 0){
 							
-						   $("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no debe de contestar por que ya contesto o por que no es tiempo de contestar, el rango de fecha es hasta el d&iacute;a 15 y con horario de 7am a 3pm.");
+						   $("#mensaje").html("La sesi&oacute;n "+unidadObtenida+" con el c&oacute;digo "+codigoEnviado+" no debe de contestar por que ya contesto o por que no es tiempo de contestar, el rango de fecha es hasta el d&iacute;a 15 y con horario de 7am a 3pm.");
 							$(".alert").show();
+							banYaContesto = true;
 							
 						} else {
 							
@@ -242,9 +246,8 @@
 
 						}
 					} else {
-						
-						 $("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no tiene los datos correcto.");
-							$(".alert").show();
+							mensajeError += codigoEnviado+",";
+					
 					}
 					
 				} else {
@@ -260,9 +263,7 @@
 				console.log(error.statusText);
 			});
 		} else {
-			
-			//$("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no tiene los datos correcto.");
-			return false;
+			mensajeError += codigoEnviado+",";
 			
 		}
 		 
@@ -285,9 +286,7 @@
 				 data : {codigo:codigo,sesion:unidad,ip:ip,actividad:"Ingreso autom&aacute;tico por bat",navegador:brw.fullName,nVersion:brw.fullVersion,plataforma:brw.platform,movil:brw.mobile,resolucion: brw.width + 'x' + brw.height}
 				
 				}).done(function(respuesta){
-					console.log(respuesta);
-						
-				
+					
 				}).fail(function(error){
 				
 					console.log("Fallo");
@@ -299,15 +298,17 @@
 		
 		if(codigo != "" && unidad != ""){
 			
-			var codigos = codigo.split("/");
+			var codigos = codigo.split("-");
 			
 			for(var i =0; i < codigos.length; i++){
 				
-				console.log(codigos[i]);
-				function validarSessionCodigo(codigoEnviado, unidadObtenida);
+				validarSessionCodigo(codigos[i], unidad);
 				
 			};
-			
+			if(banYaContesto === false){
+				$("#mensaje").html("La sesi&oacute;n "+unidad+" con c&oacute;digo(s) "+mensajeError+" no tiene los datos correcto.");
+				$(".alert").show();
+			}
 		} else {
 			
 			$("#mensaje").html("La sesi&oacute;n "+unidad+" con el c&oacute;digo "+codigo+" no tiene los datos correcto.");
