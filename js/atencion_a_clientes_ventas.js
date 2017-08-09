@@ -198,16 +198,21 @@ var anioMesEnCurso;
 							}
 					});
 					
-					
-					if($('input:radio[name=comentarios]:checked').val() == 0){
+					var radioSeleccionado = $('input:radio[name=comentarios]:checked').val();
+					if(radioSeleccionado == 0 || radioSeleccionado ==2){
 						
 						unidadesMySQL.forEach(function(entry){
 
 							if(entry.req_codigo == row.req_codigo){
 								
 								var producto = row.idProducto == "Hematix" ? 1:2;
-								unidadesMes += '<option value="'+entry.fk_unidad+'/'+producto+'">'+row.txtNombre+'</option>';
-								
+								if(radioSeleccionado == 2){
+									if(row.contestadoManual==1){
+										unidadesMes += '<option value="'+entry.fk_unidad+'/'+producto+'">'+row.txtNombre+'</option>';
+									}
+								} else {
+									unidadesMes += '<option value="'+entry.fk_unidad+'/'+producto+'">'+row.txtNombre+'</option>';
+								}
 							}
 						});
 					} else {

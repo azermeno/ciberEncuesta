@@ -30,7 +30,7 @@ function resultados(name){
 			data.forEach(function(entry){
 				if(contador % 2 == 0){
 					
-					color = 'class="warning"'
+					color = 'class="warning"';
 				} else {
 					
 					color = '';

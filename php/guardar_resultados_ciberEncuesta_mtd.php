@@ -2,8 +2,8 @@
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         
-			require_once 'config.php';
-			require_once 'respuesta_valor.php';
+			require_once 'configMySQL.php';
+			
 			session_start();
 		
 			$conn = new mysqli($mysql_config['host'], $mysql_config['user'], $mysql_config['pass'], $mysql_config['db']);

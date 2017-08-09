@@ -42,7 +42,7 @@
 					    
 						 //OBTENER LAS UNIDADES DEL ULTIMO MES
 						 
-						$sql = "SELECT m.*,u.req_codigo FROM mesEncuesta as m, aspirante as a, unidad as u WHERE m.fk_mes = {$returnJs['mes'][0]['pk_mes']} ".
+						$sql = "SELECT m.*,u.req_codigo,a.contestadoManual FROM mesEncuesta as m, aspirante as a, unidad as u WHERE m.fk_mes = {$returnJs['mes'][0]['pk_mes']} ".
 						       "AND a.fk_mesEncuesta=m.pk_mesEncuesta AND u.pk_unidad=m.fk_unidad GROUP BY m.pk_mesEncuesta;";
 						  
 						$result = $conn->query($sql);
