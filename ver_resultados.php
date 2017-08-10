@@ -54,6 +54,34 @@
 							</div>
 						</div>
 					</form>
+					<div class="panel panel-info" style="width: 50%; margin: 0 auto">
+				<div class="panel panel-body" >
+									
+									<div style="text-align: center;">
+									    <label>Reporte Excel</label>
+										<br>
+										
+										<select class="form-control" id="examen">
+										<option value="0">seleccione un ex&aacute;men</option>
+										<option value="1">seleccione un ex&aacute;men</option>
+										
+										</select>
+										<br>
+										<select class="form-control" id="fecha">
+										<option value="0">Seleccione una fecha</option>
+										<option value="1">Seleccione una fecha</option>
+										</select>
+										
+										<br>
+									</div>
+									
+									<div style="text-align: center">
+										<button type="button" class="btn btn-gray" id="reporte"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Reporte</button>
+									
+										<!-- <button type="botton" class="btn btn-warning" id="imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir</button> -->
+									</div>
+								</div>
+								</div>
 					<br>
 					
 					<input tipe="hidden" style="display: none" id="pagina" value="1">

@@ -207,7 +207,7 @@ var anioMesEnCurso;
 								
 								var producto = row.idProducto == "Hematix" ? 1:2;
 								if(radioSeleccionado == 2){
-									if(row.contestadoManual==1){
+									if(entry.contestadoManual==1){
 										unidadesMes += '<option value="'+entry.fk_unidad+'/'+producto+'">'+row.txtNombre+'</option>';
 									}
 								} else {

@@ -60,11 +60,11 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 
 		$sql = "SELECT a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
 		"FROM aspirante as a,puesto as p ".
-		"WHERE a.fk_puesto=p.pk_puesto ".$condicion." && (Nombre <> '' || email <> '') ORDER BY a.pk_aspirante DESC";
+		"WHERE a.fk_puesto=p.pk_puesto && p.puesto= {$nombre} && (Nombre <> '' || email <> '') ORDER BY a.pk_aspirante DESC";
 
 		$result = $conn->query($sql);
 
-    if($resultado->num_rows > 0 ){
+   // if($result->num_rows > 0 ){
 
 
 
@@ -72,22 +72,22 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 		$objPHPExcel = new PHPExcel();
 
 		// Set document properties
-		$objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
-									 ->setLastModifiedBy("Maarten Balliauw")
+		$objPHPExcel->getProperties()->setCreator("Abraham Jacob Zermeño")
+									 ->setLastModifiedBy("Abraham Jacob Zermeño")
 									 ->setTitle("Office 2007 XLSX Test Document")
 									 ->setSubject("Office 2007 XLSX Test Document")
-									 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+									 ->setDescription("Reporte de calificaciones de exámen.")
 									 ->setKeywords("office 2007 openxml php")
 									 ->setCategory("Test result file");
 
 
 	
 		// output data of each row
-			while($row = $result->fetch_assoc()) {
-				$aspirantes[]=$row;
-			}
+			//while($row = $result->fetch_assoc()) {
+			//	$aspirantes[]=$row;
+			//}
 				
-			foreach($aspirantes as $aspirante){
+		/*	foreach($aspirantes as $aspirante){
 				
 				$temporal = array();
 				$sql = "SELECT a.area,a.pk_area ,COUNT(p.pk_pregunta) as total FROM area as a,pregunta as p WHERE  a.fk_puesto={$aspirante['pk_puesto']} && p.fk_area=a.pk_area GROUP by a.area; ";
@@ -116,7 +116,7 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 							$returnJs[]= array_merge(array('aspirante'=>$aspirante),array('areas'=>$temporal));
 				}
 				
-			}
+			}*/
 	
 		// Add some data
 		$objPHPExcel->setActiveSheetIndex(0)
@@ -135,22 +135,18 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
 		
-		while ($fila = $resultado->fetch_array()) {
+	/*	while ($fila = $resultado->fetch_array()) {
 			$objPHPExcel->setActiveSheetIndex(0)
         		    ->setCellValue('A'.$i,  "abraham")
 		            ->setCellValue('B'.$i,  "15/11/1984")
         		    ->setCellValue('C'.$i,  "M")
             		->setCellValue('D'.$i, utf8_encode("Ing computación"));
 					
-		}
+		}*/
 		// Rename worksheet
 		$objPHPExcel->getActiveSheet()->setTitle('Simple');
 
-	} else {
-	  
-	  
-	  
-	} 
+	
 // Redirect output to a client’s web browser (Excel2007)
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="01simple.xlsx"');
@@ -167,6 +163,6 @@ header ('Pragma: public'); // HTTP/1.0
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 exit;
-} else {
-		print_r('No hay resultados para mostrar');
-	}
+//} else {
+	//	print_r('No hay resultados para mostrar');
+	//}

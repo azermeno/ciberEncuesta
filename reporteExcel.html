@@ -13,6 +13,7 @@
 		
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	</head>
+		
 
 	<body>
 		<div>
@@ -20,7 +21,7 @@
 				<h1>REPORTE DE EXCEL CON PHP Y MYSQL</h1>
 			</header>
 			
-			<div>
+			<div id="excel">
 				<a href="php/reporte_excel_examenes.php"> Haz clic para descargar el reporte</a>
 			</div>
 
@@ -30,5 +31,16 @@
 				</p>
 			</footer>
 		</div>
+		
+		<script>
+			function myFuntion() {
+			
+				//window.open('php/reporte_excel_examenes.php', '_blank');
+				alert("Hola");
+				
+			};
+			document.getElementById("excel").addEventListener("click", myFunction);
+		
+		</script>
 	</body>
 </html>

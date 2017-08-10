@@ -115,9 +115,51 @@ function resultados(name){
 		// Hacemos submit
 		document.formulario.submit();
 	}
+		
+		function mesYexamen(){
+			
+			$.ajax({
+				url : "php/obtener_mes_examen_mtd.php",
+				method: "POST",
+				dataType : "json"
+								
+			}).done(function(entrada){
+				
+				
+			}).fail(function(error){
+				
+				
+				
+			});
+			
+		}
+		function reporte(){
+			
+			//alert("Reporte");
+			var fecha = $("#fecha");
+			var examen = $("#examen");
+			console.log(examen.val())
+			console.log(fecha.val())
+			if(examen.val() != 0){
+				if(fecha.val() != 0 ){
+					
+					window.open('php/reporte_excel_examenes.php', '_blank');
+				} else {
+					
+					alert("Debe seleccionar una fecha")
+					fecha.focus();
+				}
+				
+			} else {
+					
+				alert("Debe seleccionar un examen")
+				examen.focus();
+			}
+			
+		}
 		$(function () {
 			
-			
+		 $("#reporte").on("click",reporte);	
 		resultados('');
 		$("#imprimir").on('click',imprimir);
 		
