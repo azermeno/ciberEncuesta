@@ -46,25 +46,21 @@ $conn->set_charset("utf8");
 /** Include PHPExcel */
 require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 
-		$nombre = isset($_POST['name']) ? $conn->real_escape_string($_POST['name']) : '';
-		$examen = isset($_POST['filtro']) ? $conn->real_escape_string($_POST['filtro']) : '';
+		$fecha = isset($_GET['fecha']) ? $conn->real_escape_string($_GET['fecha']) : '';
+		$examen = isset($_GET['examen']) ? $conn->real_escape_string($_GET['examen']) : '';
 		$condicion = '';
-		if($nombre != ''){
-						
-			$condicion = $examen == 0 ? ' && a.Nombre LIKE "%'.$nombre.'%" ' : ' && p.puesto LIKE "%'.$nombre.'%" ';
-		} 
-			
+					
 		$returnJs = array();
 		$aspirantes = array();
 		$temporal = array();
 
 		$sql = "SELECT a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
 		"FROM aspirante as a,puesto as p ".
-		"WHERE a.fk_puesto=p.pk_puesto && p.puesto= {$nombre} && (Nombre <> '' || email <> '') ORDER BY a.pk_aspirante DESC";
-
+		"WHERE a.fk_puesto=p.pk_puesto && p.pk_puesto= {$examen} && substring(a.tiempo_inicio,1,7) = '{$fecha}' && (a.Nombre <> '' || a.email <> '') ORDER BY a.pk_aspirante DESC";
+		
 		$result = $conn->query($sql);
 
-   // if($result->num_rows > 0 ){
+    if($result->num_rows > 0 ){
 
 
 
@@ -80,27 +76,26 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 									 ->setKeywords("office 2007 openxml php")
 									 ->setCategory("Test result file");
 
-
-	
 		// output data of each row
-			//while($row = $result->fetch_assoc()) {
-			//	$aspirantes[]=$row;
-			//}
+			while($row = $result->fetch_assoc()) {
+				$aspirantes[]=$row;
+			}
 				
-		/*	foreach($aspirantes as $aspirante){
+			foreach($aspirantes as $aspirante){
 				
 				$temporal = array();
 				$sql = "SELECT a.area,a.pk_area ,COUNT(p.pk_pregunta) as total FROM area as a,pregunta as p WHERE  a.fk_puesto={$aspirante['pk_puesto']} && p.fk_area=a.pk_area GROUP by a.area; ";
+				
 				$result = $conn->query($sql);
-				
-				
+												
 				if ($result->num_rows > 0) {
 					// output data of each row
 							while($row = $result->fetch_assoc()) {
 								
-								$sql = "SELECT count(r.pk_respuesta)  as correctas FROM contestado as c, respuesta as r, pregunta as p WHERE p.fk_area={$row['pk_area']} && r.fk_pregunta=p.pk_pregunta && r.correcta=1 && c.fk_respuesta=r.pk_respuesta && c.fk_aspirante={$aspirante['pk_aspirante']}";
+								$sql = "SELECT count(r.pk_respuesta) as correctas FROM contestado as c, respuesta as r, pregunta as p WHERE p.fk_area={$row['pk_area']} && r.fk_pregunta=p.pk_pregunta && r.correcta=1 && c.fk_respuesta=r.pk_respuesta && c.fk_aspirante={$aspirante['pk_aspirante']}";
 								
 								$result1 = $conn->query($sql);
+								
 								if ($result1->num_rows > 0) {
 								// output data of each row
 									while($row1 = $result1->fetch_assoc()) {
@@ -116,40 +111,87 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 							$returnJs[]= array_merge(array('aspirante'=>$aspirante),array('areas'=>$temporal));
 				}
 				
-			}*/
-	
-		// Add some data
-		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A1', 'Hello')
-					->setCellValue('B2', 'world!')
-					->setCellValue('C1', 'Hello')
-					->setCellValue('D2', 'world!');
-
-		// Miscellaneous glyphs, UTF-8
-		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A4', 'Miscellaneous glyphs')
-					->setCellValue('A5', 'éàèùâêîôûëïüÿäöüç');
-
-
-
-		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-		$objPHPExcel->setActiveSheetIndex(0);
-		
-	/*	while ($fila = $resultado->fetch_array()) {
-			$objPHPExcel->setActiveSheetIndex(0)
-        		    ->setCellValue('A'.$i,  "abraham")
-		            ->setCellValue('B'.$i,  "15/11/1984")
-        		    ->setCellValue('C'.$i,  "M")
-            		->setCellValue('D'.$i, utf8_encode("Ing computación"));
+			}
+						
+			$BanderaPrimerValor = false;
+			$contadorFilas = 1;
+			$contadorColumnas = 65;//asii = A y 90 = Z
+			$totalAciertos = 0;
+			$totalPreguntas = 0;
+			$resultado =0;
+			$nombreExcel ='';
+			foreach ($returnJs as $usuario){
+					 
+				 if($contadorFilas === 1){
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["puesto"]);
+					 $contadorFilas ++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, "Fecha solicitada : ".$fecha);
+					$contadorFilas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, "Nombre");
+					$contadorColumnas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, "Correo");
+					$contadorColumnas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, "Realizado");
+					$contadorColumnas++;
+					$contadorFilas++;
+					$nombreExcel = $usuario["aspirante"]["puesto"]."_".$fecha;	
+				 };
+					$contadorColumnas = 65;
+					$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["Nombre"]);
+					$contadorColumnas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["email"]);
+					$contadorColumnas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["tiempo_inicio"]);
+					$contadorColumnas++;
 					
-		}*/
+					$resultado =0;
+					$totalAciertos = 0;
+					$totalPreguntas = 0;
+				 foreach ($usuario["areas"] as $secciones){
+					
+					if($contadorFilas === 4){
+						
+						 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue(chr($contadorColumnas).($contadorFilas-1), $secciones["area"]);
+						
+					};
+					$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue(chr($contadorColumnas).($contadorFilas), $secciones["correctas"]." de ".$secciones["total"]);
+						$contadorColumnas++;
+						
+						$totalAciertos += $secciones["correctas"];
+						$totalPreguntas += $secciones["total"];
+						
+				};
+				
+				if($contadorFilas === 4){
+						
+						 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue(chr($contadorColumnas).($contadorFilas-1), "Calificación");
+						
+					};
+				$resultado = intval($totalAciertos*100/$totalPreguntas);	
+				$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue(chr($contadorColumnas).($contadorFilas), $resultado."%");
+				
+				$contadorFilas++;
+			};
+			
 		// Rename worksheet
 		$objPHPExcel->getActiveSheet()->setTitle('Simple');
 
 	
 // Redirect output to a client’s web browser (Excel2007)
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="01simple.xlsx"');
+header('Content-Disposition: attachment;filename="'.$nombreExcel.'.xlsx"');
 header('Cache-Control: max-age=0');
 // If you're serving to IE 9, then the following may be needed
 header('Cache-Control: max-age=1');
@@ -163,6 +205,6 @@ header ('Pragma: public'); // HTTP/1.0
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 exit;
-//} else {
-	//	print_r('No hay resultados para mostrar');
-	//}
+} else {
+		print_r('No hay resultados para mostrar');
+	}

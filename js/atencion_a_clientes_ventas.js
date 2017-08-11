@@ -185,6 +185,7 @@ var anioMesEnCurso;
 			//Unidades encuestadas
 		   
 		   var unidadesContestadas = 0;
+		   var unidadesContestadasManual = 0;
 			if(unidadesMySQL.length > 0){
 				
 				unidadesWs.forEach(function(row){
@@ -195,6 +196,9 @@ var anioMesEnCurso;
 							if(constestado.req_codigo == row.req_codigo){
 								
 								unidadesContestadas++;
+								if(constestado.contestadoManual==1){
+									unidadesContestadasManual++;
+								}
 							}
 					});
 					
@@ -229,7 +233,8 @@ var anioMesEnCurso;
 						
 					}				
 				});
-				$("#contestadas").html(unidadesContestadas);
+				console.log(unidadesContestadasManual);
+				$("#contestadas").html(unidadesContestadasManual+" c/m y "+(unidadesContestadas-unidadesContestadasManual)+" c/a, en total "+unidadesContestadas);
 			} else {
 				
 				 

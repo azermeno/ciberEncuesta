@@ -87,7 +87,7 @@ function resultados(name){
 			
 		},500);
 		
-	}
+	};
 	function verDetalle(){
 		
 					// Creamos el formulario auxiliar
@@ -114,36 +114,57 @@ function resultados(name){
 
 		// Hacemos submit
 		document.formulario.submit();
-	}
+	};
 		
 		function mesYexamen(){
-			
+			//alert("Hola");
 			$.ajax({
 				url : "php/obtener_mes_examen_mtd.php",
 				method: "POST",
 				dataType : "json"
 								
 			}).done(function(entrada){
-				
-				
+
+				var comboFecha ="";
+				var comboPuesto = "";
+				if(entrada.fecha.length > 0){
+					entrada.fecha.forEach(function(fecha){
+						
+						comboFecha += '<option value="'+fecha.fecha+'">'+fecha.fecha+'</option>';
+						
+					});
+				} else {
+					
+					comboFecha = '<option value="0">No hay fechas registradas</option>';
+				}
+				if(entrada.puesto.length > 0){
+					entrada.puesto.forEach(function(puesto){
+						
+						comboPuesto += '<option value="'+puesto.pk_puesto+'">'+puesto.puesto+'</option>';
+						
+					});
+				} else {
+					
+					comboPuesto = '<option value="0">No hay ex&aacute;menes registrados</option>'
+				}
+					
+				$("#fecha").append(comboFecha);
+				$("#examen").append(comboPuesto);
 			}).fail(function(error){
-				
-				
-				
+				console.log(error);
 			});
-			
-		}
+		};
+		
 		function reporte(){
 			
-			//alert("Reporte");
 			var fecha = $("#fecha");
 			var examen = $("#examen");
-			console.log(examen.val())
-			console.log(fecha.val())
+			
 			if(examen.val() != 0){
 				if(fecha.val() != 0 ){
 					
-					window.open('php/reporte_excel_examenes.php', '_blank');
+					window.open('php/reporte_excel_examenes.php?examen='+examen.val()+'&fecha='+fecha.val(), '_blank');
+					ocultar();
 				} else {
 					
 					alert("Debe seleccionar una fecha")
@@ -155,26 +176,38 @@ function resultados(name){
 				alert("Debe seleccionar un examen")
 				examen.focus();
 			}
-			
-		}
-		$(function () {
-			
-		 $("#reporte").on("click",reporte);	
-		resultados('');
-		$("#imprimir").on('click',imprimir);
+		};
 		
-		$("#form-send").submit(function(event){
+		function mostrar(){
 			
-			 event.preventDefault();
-			 //alert("En construcci\u00F3n");
-			 var nombre = $("#nombre").val();
-			 nombre = nombre.trim();
+			$("#mostrarReporte").hide();
+			$("#ocultarReporte").show();
+			$("#bloqueExcel").show();
+		};
+		function ocultar(){
 			
+			$("#fecha").val(0);
+			$("#examen").val(0);
+			$("#mostrarReporte").show();
+			$("#ocultarReporte").hide();
+			$("#bloqueExcel").hide();
+		};
+		
+		$(function () {
+			$("#mostrarReporte").on("click",mostrar);
+			$("#ocultarReporte").on("click",ocultar);
+			 $("#reporte").on("click",reporte);	
+			  mesYexamen();
+			  resultados('');
+			 $("#imprimir").on('click',imprimir);
+			
+			$("#form-send").submit(function(event){
 				
+				event.preventDefault();
+				var nombre = $("#nombre").val();
+				nombre = nombre.trim();
 				resultados(nombre);
+					
+			});
 				
-			
-			
-		});
-			
 		});

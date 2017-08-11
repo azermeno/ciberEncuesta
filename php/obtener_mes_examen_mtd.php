@@ -10,7 +10,9 @@
 			} 
 			$conn->set_charset("utf8");
 			
-			$returnJs = array();
+			$returnJs = [];
+			$returnJs["puesto"]=[];
+			$returnJs["fecha"]=[];
 			$mesActual = date("Y-m");
 			
 			$sql = "SELECT pk_puesto,puesto FROM puesto where conPromedio=1;";
@@ -19,7 +21,7 @@
 			if ($result->num_rows > 0) {
 				$contador =0;
 				while($temp = $result->fetch_assoc()) {
-				  $returnJs["puesto"] = $temp;
+				  $returnJs["puesto"][] = $temp;
 				  $contador ++;
 				}
 			}
@@ -30,7 +32,7 @@
 			if ($result->num_rows > 0) {
 				$contador =0;
 				while($temp = $result->fetch_assoc()) {
-				  $returnJs["fecha"] = $temp;
+				  $returnJs["fecha"][] = $temp;
 				  $contador ++;
 				}
 			}

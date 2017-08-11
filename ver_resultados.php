@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="css/examen.css">
         <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
         <script src="js/bootstrap.min.js"></script>
-		<script src="js/ver_resultados.js "type="text/javascript"></script>
+		<script src="js/ver_resultados1.js "type="text/javascript"></script>
    </head>
     <body>
 
@@ -46,7 +46,9 @@
 									</div>
 									
 									<div style="text-align: center">
-										<button type="submit" class="btn btn-gray"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+										<button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+										<button type="button" class="btn btn-success" id="mostrarReporte"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> Reporte Excel</button>
+										<button type="button" class="btn btn-warning" id="ocultarReporte" style="display:none"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Reporte Excel</button>
 									
 										<!-- <button type="botton" class="btn btn-warning" id="imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir</button> -->
 									</div>
@@ -54,7 +56,7 @@
 							</div>
 						</div>
 					</form>
-					<div class="panel panel-info" style="width: 50%; margin: 0 auto">
+					<div class="panel panel-info" style="width: 50%; margin: 0 auto; display:none" id="bloqueExcel">
 				<div class="panel panel-body" >
 									
 									<div style="text-align: center;">
@@ -63,20 +65,19 @@
 										
 										<select class="form-control" id="examen">
 										<option value="0">seleccione un ex&aacute;men</option>
-										<option value="1">seleccione un ex&aacute;men</option>
 										
 										</select>
 										<br>
 										<select class="form-control" id="fecha">
 										<option value="0">Seleccione una fecha</option>
-										<option value="1">Seleccione una fecha</option>
+										
 										</select>
 										
 										<br>
 									</div>
 									
 									<div style="text-align: center">
-										<button type="button" class="btn btn-gray" id="reporte"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Reporte</button>
+										<button type="button" class="btn btn-info" id="reporte"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Descargar</button>
 									
 										<!-- <button type="botton" class="btn btn-warning" id="imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir</button> -->
 									</div>
