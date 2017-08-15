@@ -38,12 +38,14 @@ function pulsar(e) {
 					var conRespuesta = 0;
 					var conRespuestaTemp = 1;
 					var checked = '';
+					var soloComentario = '';
+					var respuestaTemporal = '';
 					data.preguntas.forEach(function(entry){
 								
 							conRespuesta = 0;
 							conRespuestaTemp = 1;
-							cuestionario += '<div class="well">';
-							cuestionario += '<h3>'+numero+'.- '+entry['pregunta']+'</h3>'+
+							cuestionario += '<div class="well well-sm">';
+							cuestionario += '<h4>'+numero+'.- '+entry['pregunta']+'</h4>'+
 							'<div class="table-responsive"><table class="table">'+
 							'<tr>';
 							data.respuestas.forEach(function(temp){
@@ -65,15 +67,23 @@ function pulsar(e) {
 									}
 									if(conRespuesta > 1){
 										cuestionario += '<th><div class="radio">'+
-										'<h4><label onkeypress="return pulsar(event)" for="'+respuesta['pk_respuesta']+'">'+
+										'<h5><label onkeypress="return pulsar(event)" for="'+respuesta['pk_respuesta']+'">'+
 										'<input type="radio" name="'+respuesta['fk_pregunta']+'" id="'+
 										 respuesta['pk_respuesta']+'" value="'+respuesta['pk_respuesta']+'"'+checked+'>'+
-										 respuesta['respuesta']+'<label></h4>'+
+										 respuesta['respuesta']+'<label></h5>'+
 										'</div></th>';
 									} else {
+										
+										 soloComentario = "";
+										 respuestaTemporal = respuesta['respuesta'];
+										if(respuesta['respuesta'] === '.'){
+											
+											soloComentario = 'style="display:none;"';
+											respuestaTemporal = "";
+										} 
 										cuestionario += '<input type="radio" name="'+respuesta['fk_pregunta']+'" id="'+
-										 respuesta['pk_respuesta']+'" value="'+respuesta['pk_respuesta']+'"'+checked+'>'+
-										 respuesta['respuesta']+'';
+										 respuesta['pk_respuesta']+'" value="'+respuesta['pk_respuesta']+'" '+soloComentario+' '+checked+'>'+
+										 respuestaTemporal;
 										
 									}
 										conRespuestaTemp ++ ;
@@ -82,7 +92,7 @@ function pulsar(e) {
 							cuestionario += '</tr></table>';	
 							if(entry.banComentario == 1){
 								
-								cuestionario += '<textarea class="form-control" placeholder="Comentario" rows="5" name="abierta/'+
+								cuestionario += '<textarea class="form-control" placeholder="Comentario" rows="3" name="abierta/'+
 								entry['pk_pregunta']+'"></textarea>';
 								
 							}	

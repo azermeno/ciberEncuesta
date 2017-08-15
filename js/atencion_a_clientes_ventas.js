@@ -93,7 +93,7 @@ var anioMesEnCurso;
 								 '<th>'+faltaEncuesta.idProducto+'</th>'+
 								 '<th>'+faltaEncuesta.sitio+'</th>'+
 								 '<th>'+faltaEncuesta.zona+'</th>'+
-								 '<th style="text-align:center"><button type="button" class="btn btn-info" data-codigo="'+faltaEncuesta.req_codigo+'" style="width:60%;text-align:center"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></th>'+
+								 '<th style="text-align:center"><button type="button" class="btn btn-info realizarEncuesta" data-codigo="'+faltaEncuesta.req_codigo+'" style="width:60%;text-align:center"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></th>'+
 								 '</tr>';
 								 totalUnidadesSinEncuestar++;
 						  } 
@@ -112,7 +112,7 @@ var anioMesEnCurso;
 					unidadesMySQL = data.unidadesMySQL;
 					unidadesConComentarios = data.unidadesComentarios;
 					
-				  $(".btn-info").on('click',realizarEncuesta);	
+				  $(".realizarEncuesta").on('click',realizarEncuesta);	
 				 //Pasando informacion al select id=mes
 				  data.mes.forEach(function(entry){
 							 
@@ -233,7 +233,7 @@ var anioMesEnCurso;
 						
 					}				
 				});
-				console.log(unidadesContestadasManual);
+				//console.log(unidadesContestadasManual);
 				$("#contestadas").html(unidadesContestadasManual+" c/m y "+(unidadesContestadas-unidadesContestadasManual)+" c/a, en total "+unidadesContestadas);
 			} else {
 				
@@ -333,7 +333,6 @@ var anioMesEnCurso;
 								var contador_pregunta = [];
 								var contador_pregunta_seccion = [];
 								var numero_secciones = [];
-							
 								
 								var array_contenido = [];
 								var indice_array_contenido = 0;
@@ -344,7 +343,6 @@ var anioMesEnCurso;
 								var pk_puesto_actual = 0;
 								//Va a obtener el valor pk_aspirante inicial para saber cuantas encuesta son
 								var pk_puesto_incial = 0;
-								
 								
 								//nuevo esquema
 								var contadorPreguntas =0;
@@ -385,11 +383,10 @@ var anioMesEnCurso;
 											//Contestó más de una ves y se va a obtener la nueva ciberEncuesta
 										if(pk_puesto_incial == entry.pk_puesto){
 												
-												//se va a obtenere la calificación de cada seccion
+											//se va a obtenere la calificación de cada seccion
 											porcentajeIndividual[indice_array_contenido+'-'+pk_puesto_anterior] = 
 											typeof(porcentajeIndividual[indice_array_contenido+'-'+pk_puesto_anterior]) == 'undefined' ? 
 											0 : porcentajeIndividual[indice_array_contenido+'-'+pk_puesto_anterior];
-											
 											
 											//Obtenemos el valor por sección
 											//Se hizo un cambio para que fuera correcta la informacion de sección
@@ -412,7 +409,6 @@ var anioMesEnCurso;
 											0 : numero_secciones[indice_array_contenido];
 											
 											numero_secciones[indice_array_contenido] += ponderacionSeccion == 0 ? 0 : 1;
-											
 											 
 											nombre_encuesta = entry.puesto;
 											array_contenido[indice_array_contenido] = typeof(array_contenido[indice_array_contenido]) == 'undefined' ?
@@ -456,9 +452,7 @@ var anioMesEnCurso;
 											//Contador de secciones
 											numero_secciones[indice_array_contenido] += ponderacionSeccion == 0 ? 0 : 1;
 											
-											
-											// contador_pregunta[indice_array_contenido] = typeof(contador_pregunta[indice_array_contenido])=='undefined' ? 1 : contador_pregunta[indice_array_contenido];
-											 array_contenido[indice_array_contenido] = typeof(array_contenido[indice_array_contenido]) == 'undefined' ?
+											array_contenido[indice_array_contenido] = typeof(array_contenido[indice_array_contenido]) == 'undefined' ?
 											'' : array_contenido[indice_array_contenido];
 											
 											 array_contenido[indice_array_contenido] += '<tr class="success"><td>'+entry.puesto+'</td><td><span id="'+
@@ -467,10 +461,7 @@ var anioMesEnCurso;
 											
 										}
 									} 
-
-
-
-									       
+     
 													
 										array_contenido[indice_array_contenido] += '<tr>';
 																					
@@ -495,15 +486,13 @@ var anioMesEnCurso;
 										//si contador es 0 no se necesita contar para que no afecte al dividir
 										contador_pregunta_seccion[indice_array_contenido] += entry.respuestaPonderacion > 0 ? 1:0;
 										
-									//	total[indice_array_contenido] += ponderacionRespuesta;
 										total[indice_array_contenido] += ponderacionRespuestaXseccion;
 										
-											
 											if(entry.banComentario == 1){
 												
 													array_contenido[indice_array_contenido] += entry.comentario == null ? 
-													'<td>C.- No realiz&oacute; comentario</td></tr>': 
-													'<td>C.- '+entry.comentario + '</td></tr>';
+													'<td>R.- '+ entry.respuesta +'<br>C.- No realiz&oacute; comentario</td></tr>': 
+													'<td>R.- '+ entry.respuesta +'<br>C.- '+entry.comentario + '</td></tr>';
 								               } else {
 												   
 													array_contenido[indice_array_contenido] += '<td>R.- '+ entry.respuesta + '</td></tr>';
@@ -518,19 +507,17 @@ var anioMesEnCurso;
 											pk_puesto_actual = entry.pk_puesto;
 								});
 								
-								//se va a obtenere la calificación de cada seccion
+										//se va a obtenere la calificación de cada seccion
 										
 										porcentajeIndividual[indice_array_contenido+'-'+pk_puesto_anterior] = ponderacionRespuestaXseccion == 0 ? 0 :
 										(ponderacionRespuestaXseccion / contadorPreguntas) % 1 == 0 ? ponderacionRespuestaXseccion / contadorPreguntas :  
 										Math.round(Math.round((ponderacionRespuestaXseccion / contadorPreguntas)*10)/10);
-										
 											
-								//se hace al calculo de la sección anterior, para la ultima interaccion
+										//se hace al calculo de la sección anterior, para la ultima interaccion
 										 ponderacionTotal[indice_array_contenido] += ponderacionSeccion == 0 ? 0 :(ponderacionRespuestaXseccion/contadorPreguntas)*ponderacionSeccion; 
-										
-										numero_secciones[indice_array_contenido] += ponderacionSeccion == 0 ? 0 : 1;
+										 numero_secciones[indice_array_contenido] += ponderacionSeccion == 0 ? 0 : 1;
 																  
-									//se forman las pestañas y se coloca el porcentaje total	
+										//se forman las pestañas y se coloca el porcentaje total	
 
 								    var estado;
 									for(var i = 0; i <= indice_array_contenido; i++ ){
@@ -544,6 +531,7 @@ var anioMesEnCurso;
 										contenido += '<div id="id'+i+'" class="tab-pane fade'+active+'">';
 										
 										//Hacerlo a dos decimales
+										
 										porcentaje = parseFloat(ponderacionTotal[i] / numero_secciones[i] * 10);
 										
 										porcentaje = porcentaje % 1 == 0 ? porcentaje : Math.round(porcentaje);
@@ -578,16 +566,13 @@ var anioMesEnCurso;
 										'<td>Secci&oacute;n / Pregunta </td>'+
 										'<td style="width:35%">Respuesta / Comentario</td>'+
 										'</tr></thead><tbody>';
-										
-										
+											
 										contenido += array_contenido[i];
 										
 										contenido += '</tbody></table>';
 																				
 										contenido += '</div>';
 									}
-									
-										
 									
 									tabs += '</ul><br>';
 									contenido += '</div>';
@@ -638,7 +623,6 @@ var anioMesEnCurso;
 							}).fail(function(error){
 										console.log(error);
 										alert("Por el momento no esta disponible el apartado de preguntas, intente mas tarde (Puedes intentarlo nuevamente..)");
-									
 										
 							});
 					}
@@ -646,5 +630,3 @@ var anioMesEnCurso;
 				});
 				 
 			});
-			
-			

@@ -180,7 +180,7 @@ require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
 					};
 				$resultado = intval($totalAciertos*100/$totalPreguntas);	
 				$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValue(chr($contadorColumnas).($contadorFilas), $resultado."%");
+				->setCellValue(chr($contadorColumnas).($contadorFilas), strval($resultado)."%");
 				
 				$contadorFilas++;
 			};
