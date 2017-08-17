@@ -80,30 +80,33 @@ if ($nombreArchivo[1] === 'xlsm' || $nombreArchivo[1] === 'xlsx') {
 					$conn->query("INSERT INTO pregunta(pregunta,fk_area) VALUE('{$pregunta}',{$id_area})");
 					if($conn->affected_rows==1){
 						$id_pregunta=$conn->insert_id;
+						$correcta = 0;
 						foreach($celdas as $celda){
 							if($file[$celda]=='0' || $file[$celda]!=NULL ){
+								$correcta = 0;
+								if($celda == 'B'){
+									$correcta = 1;
+								} 
 								
-								if($celda=='B'){
-									$conn->query("INSERT INTO respuesta(respuesta,correcta,fk_pregunta)VALUE('{$file[$celda]}',1,{$id_pregunta})");
-									if($conn->affected_rows!=1){
-										//error_log("error al guardar la respuesta correcta ".$file[$celda].' '.$celda);
-										$correcto=false;
-										$conn->query("ROLLBACK");
-										$conn->close();
-										break 2;
-									} 
-								} else {
+								$respuestaProvicional = strval($file[$celda]);
+								if($file[$celda] === false){
 									
-									$conn->query("INSERT INTO respuesta(respuesta,correcta,fk_pregunta)VALUE('{$file[$celda]}',0,{$id_pregunta})");
+									$respuestaProvicional = "Falso";
+								}
+								
+								if($file[$celda] === true){
+									
+									$respuestaProvicional = "Verdadero";
+									
+								}
+									
+							$conn->query("INSERT INTO respuesta(respuesta,correcta,fk_pregunta)VALUE('{$respuestaProvicional}',{$correcta},{$id_pregunta})");
 									if($conn->affected_rows!=1){
-										//error_log("INSERT INTO respuesta(respuesta,correcta,fk_pregunta)VALUE('{$file[$celda]}',0,{$id_pregunta})".$celda);
 										$correcto=false;
 										$conn->query("ROLLBACK");
 										$conn->close();									
 										break 2;
-										
 									} 
-								}
 								
 							} else {
 								break;

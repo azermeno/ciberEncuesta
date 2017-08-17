@@ -105,10 +105,23 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 							      $id_pregunta=$conn->insert_id;
 								  $ordenRespuesta=1;
 							    	foreach($celdas as $celda){
-								    	if(isset($file[$celda]) && ($file[$celda]=='0' || $file[$celda]!=NULL )){
+										
+										$respuestaProvicional = strval($file[$celda]);
+										if($file[$celda] === false){
+											
+											$respuestaProvicional = "Falso";
+										}
+										
+										if($file[$celda] === true){
+											
+											$respuestaProvicional = "Verdadero";
+											
+										}
+										
+										if(isset($file[$celda]) && ($file[$celda]=='0' || $file[$celda]!=NULL )){
 
 											$conn->query("INSERT INTO respuesta(respuesta,correcta,fk_pregunta,respuestaOrden)
-											VALUE('{$file[$celda]}',0,{$id_pregunta},{$ordenRespuesta})");
+											VALUE('{$respuestaProvicional}',0,{$id_pregunta},{$ordenRespuesta})");
 											if($conn->affected_rows!=1){
 												
 												$correcto=false;
@@ -125,7 +138,7 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 									}//fin foreach celda
 
 							    } else {
-									//error_log("error al guardar la pregunta  ".$file['A']);
+									
 									$correcto=false;
 									$conn->query("ROLLBACK");
 									$conn->close();

@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="css/examen.css">
         <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
         <script src="js/bootstrap.min.js"></script>
-		<script src="js/ver_resultados1.js "type="text/javascript"></script>
+		<script src="js/ver_resultados.js "type="text/javascript"></script>
    </head>
     <body>
 
