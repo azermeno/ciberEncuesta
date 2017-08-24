@@ -168,16 +168,16 @@ var banIdentificador = false;
 							data.preguntas.forEach(function(entry){
 								if(typeof(entry['area']) != 'undefined'){
 										if(cuestionario==''){
-											cuestionario += '<div class="well" style="text-align:center">';
+											cuestionario += '<div class="well well-sm" style="text-align:center">';
 											
 										} else {
 											
-											cuestionario += '</div><div class="well" style="text-align:center">';
+											cuestionario += '</div><div class="well well-sm" style="text-align:center">';
 										}
 									cuestionario += '<h2>'+ entry['area'] +'</h2>';
 								} else if(typeof(entry['fk_area']) != 'undefined'){ //es pregunta
 										
-									cuestionario += '</div><div class="well">';
+									cuestionario += '</div><div class="well well-sm">';
 									cuestionario += '<h3>'+numero+'.- '+entry['pregunta']+'</h3>';
 									numero++;
 								} else { //es respuesta
@@ -249,12 +249,12 @@ var banIdentificador = false;
 							if(typeof(entry['area']) != 'undefined'){
 								if(cuestionario==''){
 									
-									cuestionario += '<div class="well ponderacion" style="text-align:center"><h3><b>Ponderaci&oacute;n de la secci&oacute;n:&nbsp; <span id="A'+entry.fk_puesto+'">'+entry.puestoPonderacion+'</span></b></h3>';
+									cuestionario += '<div class="well well-sm ponderacion" style="text-align:center"><h3><b>Ponderaci&oacute;n de la secci&oacute;n:&nbsp; <span id="A'+entry.fk_puesto+'">'+entry.puestoPonderacion+'</span></b></h3>';
 									ponderaciones['A'+entry.fk_puesto] = entry.puestoPonderacion;
 									
 								} else {
 									
-									cuestionario += '</div><div class="well" style="text-align:center">';
+									cuestionario += '</div><div class="well well-sm" style="text-align:center">';
 									
 								}
 								cuestionario += '<h2>'+ entry['area'] +'</h2>';
@@ -265,7 +265,7 @@ var banIdentificador = false;
 									cuestionario += '</table></div>';
 									
 								}
-								cuestionario += '</div><div class="well">';
+								cuestionario += '</div><div class="well well-sm">';
 								cuestionario += '<h3>'+numero+'.- ' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;<label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
 								cuestionario += '<div class="table-responsive"><table class="table">';
 								numero++;

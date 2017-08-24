@@ -241,33 +241,33 @@ session_start();
 													
 					
 						<div class="alert alert-danger" role="alert" style="color:black; text-align:left"><b>IMPORTANTE:</b> el archivo debe tener la siguiente estructura:<br>
-						Paso 1. <br>
-						El nombre del archivo es el nombre que se le va a dar a la encuesta 
-						<br>(Ejemplo: <b>calidad.xlsx</b>).<br>
-						Si la encuesta lleva ponderaci&oacute;n <b>(0 a 10)</b> se coloca antes del nombre seguido por un <b>(-)</b>
-						<br>(Ejemplo: <b>9-calidad.xlsx</b>).<br>
-						<br>
-						Paso 2.
-						
-						<br>
-						<u>En la celdas <i>A</i></u> debe ir la <b>pregunta.</b><br>
-						<br>
-						Si la pregunta lleva pornderaci&oacute;n <b>(0 a 10)</b> debe ir antes de la pregunta seguida por un <b>(-)</b> 
-						<b>(</b>Ejemplo: <b>8-</b>Pregunta<b>)</b>.<br>
-						<br>
-						<u>En la celda <i>'B'</i> correspondiente a la pregunta</u>, se coloca una <u><b>C</b></u>, si lleva comentarios, de lo contrario <u><b>N</b></u>.
-						<br>
-						<br>
-						<u>En las celdas siguientes <i><b>(</b>C,D,E,F...etc<b>)</b></i></u> van las <b>opciones de la pregunta</b>, en el orden que se acomoden son como van a aparecer,
-						la celda 'C' ser&aacute; la opci&oacute;n uno, la celda 'D' la opci&oacute;n dos, etc...<br><br>
-						Si se va a realizar una pregunta s&oacute;lo con comentario en la celda <b>'C'</b> se coloca un punto 
-						<b>(</b>.<b>)</b> como muestra la pregunta 16 del ejemplo que se muestra al final de las instrucciones.<br><br>
-						Se repite el paso <b>2 </b> hasta finalizar el examen.<br><br>
-						
-						<b>Nota: el orden en que se acomoden las pregunas es como aparecer&aacute;n en la encuesta</b>
-						<br>
-						<br>
-						<a href="" id="ejemploEncuesta">PARA VER UN EJEMPLO PRESIONA AQU&Iacute;</a>
+							Paso 1. <br>
+							El nombre del archivo es el nombre que se le va a dar a la encuesta 
+							<br>(Ejemplo: <b>calidad.xlsx</b>).<br>
+							Si la encuesta lleva ponderaci&oacute;n <b>(0 a 10)</b> se coloca antes del nombre seguido por un <b>(-)</b>
+							<br>(Ejemplo: <b>9-calidad.xlsx</b>).<br>
+							<br>
+							Paso 2.
+							
+							<br>
+							<u>En la celdas <i>A</i></u> debe ir la <b>pregunta.</b><br>
+							<br>
+							Si la pregunta lleva pornderaci&oacute;n <b>(0 a 10)</b> debe ir antes de la pregunta seguida por un <b>(-)</b> 
+							<b>(</b>Ejemplo: <b>8-</b>Pregunta<b>)</b>.<br>
+							<br>
+							<u>En la celda <i>'B'</i> correspondiente a la pregunta</u>, se coloca una <u><b>C</b></u>, si lleva comentarios, de lo contrario <u><b>N</b></u>.
+							<br>
+							<br>
+							<u>En las celdas siguientes <i><b>(</b>C,D,E,F...etc<b>)</b></i></u> van las <b>opciones de la pregunta</b>, en el orden que se acomoden son como van a aparecer,
+							la celda 'C' ser&aacute; la opci&oacute;n uno, la celda 'D' la opci&oacute;n dos, etc...<br><br>
+							Si se va a realizar una pregunta s&oacute;lo con comentario en la celda <b>'C'</b> se coloca un punto 
+							<b>(</b>.<b>)</b> como muestra la pregunta 16 del ejemplo que se muestra al final de las instrucciones.<br><br>
+							Se repite el paso <b>2 </b> hasta finalizar el examen.<br><br>
+							
+							<b>Nota: el orden en que se acomoden las pregunas es como aparecer&aacute;n en la encuesta</b>
+							<br>
+							<br>
+							<a href="" id="ejemploEncuesta">PARA VER UN EJEMPLO PRESIONA AQU&Iacute;</a>
 						
 						</div>
 						
