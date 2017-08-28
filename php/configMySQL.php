@@ -4,9 +4,9 @@ date_default_timezone_set('America/Mexico_City');
 $pageLimit = 20;
 
 $mysql_config = array(
-  'host' => 'localhost',
+  'host' => '127.0.0.1',
   'db' => 'cuestionario',
   'user' => 'root',
-  'pass' => 'mysql123'
+  'pass' => 'SL8dq%ECh.+?N<,&'
 );
 ?>

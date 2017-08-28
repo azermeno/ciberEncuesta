@@ -33,7 +33,7 @@ $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
 echo '<hr />';
 
-$sheetData = $objPHPExcel->getActiveSheet()->toArray(false,true,true,true);
+$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
 var_dump($sheetData);
 
 

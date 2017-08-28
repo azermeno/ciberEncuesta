@@ -44,10 +44,11 @@ if ($conn->connect_error) {
 $conn->set_charset("utf8");
 
 /** Include PHPExcel */
-require_once dirname(__FILE__) . '/../PHPExcel-1.8/Classes/PHPExcel.php';
+require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 
 		$fecha = isset($_GET['fecha']) ? $conn->real_escape_string($_GET['fecha']) : '';
 		$examen = isset($_GET['examen']) ? $conn->real_escape_string($_GET['examen']) : '';
+		$banEncuesta = isset($_GET['banEncuesta']) ? $conn->real_escape_string($_GET['banEncuesta']) : '0';
 		$condicion = '';
 					
 		$returnJs = array();

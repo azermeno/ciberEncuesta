@@ -34,7 +34,7 @@ date_default_timezone_set('Europe/London');
 define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 
 /** Include PHPExcel */
-require_once '../Build/PHPExcel.phar';
+require_once '../Classes/PHPExcel.php';
 
 
 // Create new PHPExcel object
@@ -110,3 +110,7 @@ echo date('H:i:s') , " Peak memory usage: " , (memory_get_peak_usage(true) / 102
 // Echo done
 echo date('H:i:s') , " Done writing files" , EOL;
 echo 'Files have been created in ' , getcwd() , EOL;
+
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="pruebaReal.xlsx"');
+header('Cache-Control: max-age=0');

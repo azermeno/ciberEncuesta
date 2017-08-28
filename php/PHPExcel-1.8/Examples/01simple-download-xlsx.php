@@ -29,7 +29,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-date_default_timezone_set('Europe/London');
+date_default_timezone_set('America/Mexico_City');
 
 if (PHP_SAPI == 'cli')
 	die('This example should only be run from a Web Browser');

@@ -39,7 +39,7 @@
 									<div style="text-align: center;">
 									    <label>Seleccione un filtro:</label>
 										<br>
-										<label><input type="checkbox" name="filtro" value="1" >Ver encuestas</label>
+										<label><input type="checkbox" name="encuesta" value="1" >Ver encuestas</label>
 										<br>
 										<label class="radio-inline"><input type="radio" name="filtro" value="0" checked>Por nombre</label>
                                         <label class="radio-inline"><input type="radio" name="filtro" value="1">Por examen/puesto</label>

@@ -1,21 +1,25 @@
 function resultados(name){
 	
 			var filtro = $('input:radio[name=filtro]:checked').val();
+			var inputEncuesta = $("input:checkbox").is(':checked') ? 1 : 0;
 		   
 			$.ajax({
 			method:"POST",
 			url: "php/obtener_resultados_mtd.php",
 			dataType:"json",
-			data:{name:name, filtro:filtro}
+			data:{name:name, filtro:filtro, banEncuesta:inputEncuesta}
 			
 		}).done(function(data){
 			
 			var area,preguntas,respuestas,preguntasInt,aciertosInt,total,color,porcentaje;
 			var contador =1;
+			var nombre = "";
+			var correo = "";
 				$("#tabla-contenido").empty();
+				var nombreOidentificador = inputEncuesta == 1 ? "Identificador" : "Nombre";
 				$("#tabla-contenido").append( 
 				 '<tr class="warning">'+
-					'<th style="width: 12%;" class="info centrado">Nombre</th>'+
+					'<th style="width: 12%;" class="info centrado">'+nombreOidentificador+'</th>'+
 					'<th style="width: 11%;" class="info centrado">Correo</th>'+
 					'<th style="width: 11%;" class="info centrado">Puesto solicitado</th>'+
 					'<th style="width: 9%;" class="info centrado">Realizado</th>'+
@@ -48,11 +52,23 @@ function resultados(name){
 					aciertosInt +=parseInt(entry2.correctas);
 				});
 					porcentaje = parseInt((aciertosInt * 100 )/preguntasInt);
-				total = aciertosInt+' de '+preguntasInt+ '<br>' + porcentaje + '%';
+					if(inputEncuesta == 0 ){
+						
+						nombre = entry.aspirante.Nombre;
+						correo = entry.aspirante.email;
+						total = aciertosInt+' de '+preguntasInt+ '<br>' + porcentaje + '%';
+					} else {
+						total = preguntasInt + " preguntas en total";
+						respuestas = "N/A"
+						nombre = entry.aspirante.seccion;
+						correo = "No aplica";
+					}
+					
+				
 				$("#tabla-contenido").append( 
 				'<tr '+color+'>'+
-					'<th class="centrado">'+entry.aspirante.Nombre+'</th>'+
-					'<th class="centrado">'+entry.aspirante.email+'</th>'+
+					'<th class="centrado">'+nombre+'</th>'+
+					'<th class="centrado">'+correo+'</th>'+
 					'<th class="centrado">'+entry.aspirante.puesto+'</th>'+
 					'<th class="centrado">'+entry.aspirante.tiempo_inicio+'</th>'+
 					'<th class="centrado">'+area+'</th>'+
@@ -159,11 +175,12 @@ function resultados(name){
 			
 			var fecha = $("#fecha");
 			var examen = $("#examen");
+			var banEncuesta = $("input:checkbox").is(':checked') ? 1 : 0;
 			
 			if(examen.val() != 0){
 				if(fecha.val() != 0 ){
 					
-					window.open('php/reporte_excel_examenes.php?examen='+examen.val()+'&fecha='+fecha.val(), '_blank');
+					window.open('php/reporte_excel_examenes.php?examen='+examen.val()+'&fecha='+fecha.val()+'&banEncuesta='+banEncuesta, '_blank');
 					ocultar();
 				} else {
 					
@@ -196,13 +213,16 @@ function resultados(name){
 		$(function () {
 			
 			$("input:checkbox").on( 'change', function() {
-				if( $(this).is(':checked') ) {
+				/*if( $(this).is(':checked') ) {
 					// Hacer algo si el checkbox ha sido seleccionado
 					alert("El checkbox con valor " + $(this).val() + " ha sido seleccionado");
 				} else {
 					// Hacer algo si el checkbox ha sido deseleccionado
 					alert("El checkbox con valor " + $(this).val() + " ha sido deseleccionado");
-				}
+				}*/
+				var nombre = $("#nombre").val();
+				nombre = nombre.trim();
+				resultados(nombre);
 			});
 			$("#mostrarReporte").on("click",mostrar);
 			$("#ocultarReporte").on("click",ocultar);

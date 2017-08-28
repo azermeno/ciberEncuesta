@@ -4,7 +4,6 @@
         
 		require_once 'config.php';
         
-        
 		$conn = new mysqli($mysql_config['host'], $mysql_config['user'], $mysql_config['pass'], $mysql_config['db']);
 			// Check connection
 			if ($conn->connect_error) {
@@ -13,21 +12,37 @@
 			$conn->set_charset("utf8");
 			$nombre = isset($_POST['name']) ? $conn->real_escape_string($_POST['name']) : '';
 			$examen = isset($_POST['filtro']) ? $conn->real_escape_string($_POST['filtro']) : '';
+			$banEncuesta = isset($_POST['banEncuesta']) ? $conn->real_escape_string($_POST['banEncuesta']) : '0';
+			
 			$condicion = '';
 			if($nombre != ''){
 				
-				
-				$condicion = $examen == 0 ? ' && a.Nombre LIKE "%'.$nombre.'%" ' : ' && p.puesto LIKE "%'.$nombre.'%" ';
+				if($banEncuesta == 0){
+					
+					$condicion = $examen == 0 ? ' && a.Nombre LIKE "%'.$nombre.'%" ' : ' && p.puesto LIKE "%'.$nombre.'%" ';
+					
+				} else {
+					
+					$condicion = $examen == 0 ? ' && s.seccion LIKE "%'.$nombre.'%" ' : ' && p.puesto LIKE "%'.$nombre.'%" ';
+										
+				}
 			} 
 				
 			$returnJs = array();
 			$aspirantes = array();
 			$temporal = array();
 			
-			$sql = "SELECT a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
-			"FROM aspirante as a,puesto as p ".
-			"WHERE a.fk_puesto=p.pk_puesto ".$condicion." && (Nombre <> '' || email <> '') ORDER BY a.pk_aspirante DESC";
-			
+			if($banEncuesta == 0){
+				
+				$sql = "SELECT a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
+				"FROM aspirante as a,puesto as p ".
+				"WHERE a.fk_puesto=p.pk_puesto ".$condicion." && (Nombre <> '' || email <> '') ORDER BY a.pk_aspirante DESC";
+			} else {
+				$sql = "SELECT s.seccion,a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
+				"FROM aspirante as a,puesto as p, seccion as s ".
+				"WHERE a.fk_puesto=p.pk_puesto ".$condicion." && s.pk_seccion = a.fk_seccion ORDER BY a.pk_aspirante DESC";
+			}
+
 			$result = $conn->query($sql);
 			
 			if ($result->num_rows > 0) {
