@@ -54,10 +54,20 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 		$returnJs = array();
 		$aspirantes = array();
 		$temporal = array();
-
-		$sql = "SELECT a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
-		"FROM aspirante as a,puesto as p ".
-		"WHERE a.fk_puesto=p.pk_puesto && p.pk_puesto= {$examen} && substring(a.tiempo_inicio,1,7) = '{$fecha}' && (a.Nombre <> '' || a.email <> '') ORDER BY a.pk_aspirante DESC";
+		
+		if($banEncuesta == 0){ //Son exámenes
+			$sql = "SELECT a.pk_aspirante,a.Nombre,a.email,a.tiempo_inicio,p.puesto,p.pk_puesto ".
+			"FROM aspirante as a,puesto as p ".
+			"WHERE a.fk_puesto=p.pk_puesto && p.pk_puesto= {$examen} && substring(a.tiempo_inicio,1,7) = '{$fecha}' && (a.Nombre <> '' || a.email <> '') ORDER BY a.pk_aspirante DESC;";
+		} else { // Son encuesta
+			
+			$sql = "SELECT c.comentario, pre.pregunta, r.respuesta, s.seccion, a.pk_aspirante, a.Nombre, a.email, a.tiempo_inicio, p.puesto, p.pk_puesto ".
+			"FROM aspirante as a,puesto as p, seccion as s, contestado as c, respuesta as r, pregunta as pre ".
+			"WHERE a.fk_puesto=p.pk_puesto && p.pk_puesto= {$examen} && substring(a.tiempo_inicio,1,7) = '{$fecha}' && s.pk_seccion=a.fk_seccion && a.pk_aspirante=c.fk_aspirante && c.fk_respuesta=r.pk_respuesta && r.fk_pregunta=pre.pk_pregunta ORDER BY a.pk_aspirante DESC;";
+			
+		}
+		
+		error_log($sql);
 		
 		$result = $conn->query($sql);
 
@@ -81,39 +91,44 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 			while($row = $result->fetch_assoc()) {
 				$aspirantes[]=$row;
 			}
-				
-			foreach($aspirantes as $aspirante){
-				
-				$temporal = array();
-				$sql = "SELECT a.area,a.pk_area ,COUNT(p.pk_pregunta) as total FROM area as a,pregunta as p WHERE  a.fk_puesto={$aspirante['pk_puesto']} && p.fk_area=a.pk_area GROUP by a.area; ";
-				
-				$result = $conn->query($sql);
-												
-				if ($result->num_rows > 0) {
-					// output data of each row
-							while($row = $result->fetch_assoc()) {
-								
-								$sql = "SELECT count(r.pk_respuesta) as correctas FROM contestado as c, respuesta as r, pregunta as p WHERE p.fk_area={$row['pk_area']} && r.fk_pregunta=p.pk_pregunta && r.correcta=1 && c.fk_respuesta=r.pk_respuesta && c.fk_aspirante={$aspirante['pk_aspirante']}";
-								
-								$result1 = $conn->query($sql);
-								
-								if ($result1->num_rows > 0) {
-								// output data of each row
-									while($row1 = $result1->fetch_assoc()) {
-										
-										$temporal[]= array_merge($row,$row1);
-									}
-								} else {
+			if($banEncuesta == 0){ // Es un examen	
+				foreach($aspirantes as $aspirante){
+					
+					$temporal = array();
+					$sql = "SELECT a.area,a.pk_area ,COUNT(p.pk_pregunta) as total FROM area as a,pregunta as p WHERE  a.fk_puesto={$aspirante['pk_puesto']} && p.fk_area=a.pk_area GROUP by a.area; ";
+					
+					$result = $conn->query($sql);
+													
+					if ($result->num_rows > 0) {
+						// output data of each row
+								while($row = $result->fetch_assoc()) {
 									
-									$temporal[]= array_merge($row,array($row['area'] =>'0'));
+									$sql = "SELECT count(r.pk_respuesta) as correctas FROM contestado as c, respuesta as r, pregunta as p WHERE p.fk_area={$row['pk_area']} && r.fk_pregunta=p.pk_pregunta && r.correcta=1 && c.fk_respuesta=r.pk_respuesta && c.fk_aspirante={$aspirante['pk_aspirante']}";
+									
+									$result1 = $conn->query($sql);
+									
+									if ($result1->num_rows > 0) {
+									// output data of each row
+										while($row1 = $result1->fetch_assoc()) {
+											
+											$temporal[]= array_merge($row,$row1);
+										}
+									} else {
+										
+										$temporal[]= array_merge($row,array($row['area'] =>'0'));
+									}
+									
 								}
-								
-							}
-							$returnJs[]= array_merge(array('aspirante'=>$aspirante),array('areas'=>$temporal));
+								$returnJs[]= array_merge(array('aspirante'=>$aspirante),array('areas'=>$temporal));
+					}
+					
 				}
+			} else { // El es una encuesta
+				
+				$returnJs = $aspirantes;
 				
 			}
-						
+			error_log(print_r($returnJs,true));			
 			$BanderaPrimerValor = false;
 			$contadorFilas = 1;
 			$contadorColumnas = 65;//asii = A y 90 = Z
@@ -121,69 +136,126 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 			$totalPreguntas = 0;
 			$resultado =0;
 			$nombreExcel ='';
+			$banCambioEncuesta = '';
 			foreach ($returnJs as $usuario){
-					 
-				 if($contadorFilas === 1){
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["puesto"]);
-					 $contadorFilas ++;
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, "Fecha solicitada : ".$fecha);
-					$contadorFilas++;
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, "Nombre");
-					$contadorColumnas++;
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, "Correo");
-					$contadorColumnas++;
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, "Realizado");
-					$contadorColumnas++;
-					$contadorFilas++;
-					$nombreExcel = $usuario["aspirante"]["puesto"]."_".$fecha;	
-				 };
-					$contadorColumnas = 65;
-					$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["Nombre"]);
-					$contadorColumnas++;
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["email"]);
-					$contadorColumnas++;
-					 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["tiempo_inicio"]);
-					$contadorColumnas++;
-					
-					$resultado =0;
-					$totalAciertos = 0;
-					$totalPreguntas = 0;
-				 foreach ($usuario["areas"] as $secciones){
-					
-					if($contadorFilas === 4){
-						
+				if($banEncuesta == 0){//Es exámen
+						 
+					 if($contadorFilas === 1){
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["puesto"]);
+							 $contadorFilas ++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "Fecha solicitada : ".$fecha);
+							$contadorFilas++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "Nombre");
+							$contadorColumnas++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "Correo");
+							$contadorColumnas++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "Realizado");
+							$contadorColumnas++;
+							$contadorFilas++;
+							$nombreExcel = $usuario["aspirante"]["puesto"]."_".$fecha;	
+					 }
+						$contadorColumnas = 65;
+						$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["Nombre"]);
+						$contadorColumnas++;
 						 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue(chr($contadorColumnas).($contadorFilas-1), $secciones["area"]);
-						
-					};
-					$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue(chr($contadorColumnas).($contadorFilas), $secciones["correctas"]." de ".$secciones["total"]);
+						->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["email"]);
+						$contadorColumnas++;
+						 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["aspirante"]["tiempo_inicio"]);
 						$contadorColumnas++;
 						
-						$totalAciertos += $secciones["correctas"];
-						$totalPreguntas += $secciones["total"];
+						$resultado =0;
+						$totalAciertos = 0;
+						$totalPreguntas = 0;
+					 foreach ($usuario["areas"] as $secciones){
 						
-				};
+						if($contadorFilas === 4){
+							
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).($contadorFilas-1), $secciones["area"]);
+							
+						};
+						$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).($contadorFilas), $secciones["correctas"]." de ".$secciones["total"]);
+							$contadorColumnas++;
+							
+							$totalAciertos += $secciones["correctas"];
+							$totalPreguntas += $secciones["total"];
+							
+					}
+					
+					if($contadorFilas === 4){
+							
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).($contadorFilas-1), "Calificación");
+							
+						}
+					$resultado = intval($totalAciertos*100/$totalPreguntas);	
+					$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).($contadorFilas), strval($resultado)."%");
+					
+					$contadorFilas++;
+				} else { //Es encuesta
+					
+					 if($contadorFilas === 1){
+							$banCambioEncuesta = $usuario["tiempo_inicio"];
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["puesto"]);
+							 $contadorFilas ++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "Fecha solicitada : ".$fecha);
+							$contadorFilas++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "IDENTIFICADOR");
+							$contadorColumnas++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "REALIZADO");
+							$contadorColumnas++;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "PREGUNTA");
+							$contadorColumnas++;
+							$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "RESPUESTA");
+							$contadorColumnas++;$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue(chr($contadorColumnas).$contadorFilas, "COMENTARIO");
+							$contadorColumnas++;
+							$contadorFilas++;
+							$nombreExcel = $usuario["puesto"]."_".$fecha;	
+					 }
+					 
+					 $contadorColumnas = 65;
+					$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["seccion"]);
+					$contadorColumnas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["tiempo_inicio"]);
+					$contadorColumnas++;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["pregunta"]);
+					$contadorColumnas++;
+					$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["respuesta"]);
+					$contadorColumnas++;
+					$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["comentario"]);
+					$contadorFilas++;
+					
+					if($banCambioEncuesta != $usuario["tiempo_inicio"]){
+						
+						$contadorFilas++;
+						
+					} else {
+						
+						$banCambioEncuesta = $usuario["tiempo_inicio"];
+					}
 				
-				if($contadorFilas === 4){
-						
-						 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue(chr($contadorColumnas).($contadorFilas-1), "Calificación");
-						
-					};
-				$resultado = intval($totalAciertos*100/$totalPreguntas);	
-				$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValue(chr($contadorColumnas).($contadorFilas), strval($resultado)."%");
-				
-				$contadorFilas++;
+				}
 			};
 			
 		// Rename worksheet

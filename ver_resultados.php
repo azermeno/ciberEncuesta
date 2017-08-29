@@ -41,7 +41,7 @@
 										<br>
 										<label><input type="checkbox" name="encuesta" value="1" >Ver encuestas</label>
 										<br>
-										<label class="radio-inline"><input type="radio" name="filtro" value="0" checked>Por nombre</label>
+										<label class="radio-inline"><input type="radio" name="filtro" value="0" checked>Por nombre/Identificador</label>
                                         <label class="radio-inline"><input type="radio" name="filtro" value="1">Por examen/puesto</label>
 										<input type="text" class="form-control" id="nombre"  placeholder="Ingrese el texto o una parte para filtrar">
 										<br>

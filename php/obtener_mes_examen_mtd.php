@@ -10,13 +10,16 @@
 			} 
 			$conn->set_charset("utf8");
 			
+			$banEncuesta = isset($_POST['banEncuesta']) ? $conn->real_escape_string($_POST['banEncuesta']) : '0';
+			$banEncuesta = $banEncuesta == 1 ? 0 : 1;
+			
 			$returnJs = [];
 			$returnJs["puesto"]=[];
 			$returnJs["fecha"]=[];
 			$mesActual = date("Y-m");
 			
-			$sql = "SELECT pk_puesto,puesto FROM puesto where conPromedio=1;";
-			//error_log($sql);
+			$sql = "SELECT pk_puesto,puesto FROM puesto where conPromedio={$banEncuesta};";
+			
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0) {
 				$contador =0;
@@ -26,8 +29,8 @@
 				}
 			}
 
-			$sql = "SELECT substring(a.tiempo_inicio,1,7) as fecha FROM puesto as p, aspirante as a where a.fk_puesto=p.pk_puesto AND p.conPromedio=1 GROUP BY fecha DESC;";
-			//error_log($sql);
+			$sql = "SELECT substring(a.tiempo_inicio,1,7) as fecha FROM puesto as p, aspirante as a where a.fk_puesto=p.pk_puesto AND p.conPromedio={$banEncuesta} GROUP BY fecha DESC;";
+			
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0) {
 				$contador =0;
@@ -38,7 +41,6 @@
 			}
 			$result->free();
 
-			
 			$conn->close();
 			
 			echo json_encode($returnJs);

@@ -133,16 +133,22 @@ function resultados(name){
 	};
 		
 		function mesYexamen(){
-			//alert("Hola");
+			
+			$("#fecha").empty();
+		    $("#examen").empty();
+			var comboPuesto = '<option value="0">seleccione un ex&aacute;men</option>';
+			var comboFecha ='<option value="0">Seleccione una fecha</option>';
+			var inputEncuesta = $("input:checkbox").is(':checked') ? 1 : 0;
 			$.ajax({
 				url : "php/obtener_mes_examen_mtd.php",
 				method: "POST",
-				dataType : "json"
+				dataType : "json",
+				data : {banEncuesta : inputEncuesta}
 								
 			}).done(function(entrada){
 
-				var comboFecha ="";
-				var comboPuesto = "";
+				
+				
 				if(entrada.fecha.length > 0){
 					entrada.fecha.forEach(function(fecha){
 						
@@ -223,6 +229,7 @@ function resultados(name){
 				var nombre = $("#nombre").val();
 				nombre = nombre.trim();
 				resultados(nombre);
+				mesYexamen();
 			});
 			$("#mostrarReporte").on("click",mostrar);
 			$("#ocultarReporte").on("click",ocultar);
