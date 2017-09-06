@@ -133,6 +133,18 @@ var banIdentificador = false;
 		
 		});
 	}
+			
+		function copiarAlPortapapeles(id_elemento) {
+		
+					  var aux = document.createElement("input");
+					  aux.setAttribute("value", document.getElementById("urlParaCopiar").value + document.getElementById(id_elemento).innerHTML);
+					  document.body.appendChild(aux);
+					  aux.select();
+					  document.execCommand("copy");
+					  document.body.removeChild(aux);
+					  
+					  }
+		
 	$(function () {
 		
 			obtenerPuestos();
@@ -412,6 +424,16 @@ var banIdentificador = false;
 						  }
 					
 				});
+				
+								
+				function getAbsolutePath() {
+					var loc = window.location;
+					var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+					return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
+				}
+				
+				
+								
 				$("#puestoEncuesta").change(function(){
 				
 						$("#actualiza").show();
@@ -428,23 +450,29 @@ var banIdentificador = false;
 					  if($("#puestoEncuesta").val()!=0){
 							  var id = $(this).val();
 							  var datos = informacion[id].split('.');
-							 
+							  var urlAbsoluta = getAbsolutePath();
+							  
 							  if(datos[2]==0){
 								 
 							  $("#puestoEncuesta").css("background","rgb(217,83,79)");
 							  $("#puestoEncuesta").css("color","black");
-							  $("#estadoEncuesta").html('URL :<br><del>http://encuesta.redlab.com.mx/vieja/ciberEncuestaPHP/<br>examen/encuesta.php?info='+btoa(id)+
+							  $("#estadoEncuesta").html('URL :<br><del>'+urlAbsoluta+'<br>encuesta.php?info='+btoa(id)+
 								'</del>');
 								$("#estadoEncuestaBoton").html('Estado:   <input data-id="'+id+
 							  '" id="switch-state" type="checkbox" data-on-text="Activo" data-off-text="Inactivo" data-on-color="info" data-off-color="danger">');
+							  $("#urlParaCopiar").val(urlAbsoluta+'encuesta.php?info='+btoa(id)+
+								'&identificador=');
 							  } else {
 								  
 								$("#puestoEncuesta").css("background","white");
-								$("#estadoEncuesta").html('URL :<br> http://encuesta.redlab.com.mx/vieja/ciberEncuestaPHP/<br>examen/encuesta.php?info='+btoa(id)+
+								$("#estadoEncuesta").html('URL :<br>'+urlAbsoluta+'<br>encuesta.php?info='+btoa(id)+
 								'<br>&identificador=<span id="identificador"></span>');
 								$("#estadoEncuestaBoton").html('Estado   <input data-id="'+id+
 								'" id="switch-state" type="checkbox" data-on-text="Activo" data-off-text="Inactivo" data-on-color="info" data-off-color="danger" checked>');
+								$("#urlParaCopiar").val(urlAbsoluta+'encuesta.php?info='+btoa(id)+
+								'&identificador=');
 							  }
+							  							 
 						} else {
 							
 						   $("#puestoEncuesta").css("background","white");
@@ -453,13 +481,16 @@ var banIdentificador = false;
 		
 				});
 				$("#identificadoresExistenetes").change(function(){
-					  $("#identificadoresExistenetes").val('0');
+						
+					 // $("#identificadoresExistenetes").val('0');
 					  $("#inputText").val('');
+							 
 					  if($("#identificadoresExistenetes").val()!=0){
 							  var textoSelect = $(this).val();
-							  
+							 
 							$("#identificador").text(btoa(textoSelect));
 						} else {
+							  
 							$("#identificador").text("");
 						  
 					    }

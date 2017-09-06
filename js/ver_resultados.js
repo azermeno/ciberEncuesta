@@ -17,19 +17,35 @@ function resultados(name){
 			var correo = "";
 				$("#tabla-contenido").empty();
 				var nombreOidentificador = inputEncuesta == 1 ? "Identificador" : "Nombre";
-				$("#tabla-contenido").append( 
-				 '<tr class="warning">'+
-					'<th style="width: 12%;" class="info centrado">'+nombreOidentificador+'</th>'+
-					'<th style="width: 11%;" class="info centrado">Correo</th>'+
-					'<th style="width: 11%;" class="info centrado">Puesto solicitado</th>'+
-					'<th style="width: 9%;" class="info centrado">Realizado</th>'+
-					'<th style="width: 38%;" class="info centrado">&Aacute;rea</th>'+
-					'<th style="width: 5%;" class="info centrado">Preguntas</th>'+
-					'<th style="width: 5%;" class="info centrado">Aciertos</th>'+
-					'<th style="width: 5%;" class="info centrado">Resultado</th>'+
-					'<th style="width: 4%;" class="info centrado">Ver</th>'+
-											
-				'</tr>');
+				
+				if(inputEncuesta == 0 ){
+					
+					$("#tabla-contenido").append( 
+					 '<tr class="warning">'+
+						'<th style="width: 12%;" class="info centrado">'+nombreOidentificador+'</th>'+
+						'<th style="width: 11%;" class="info centrado">Correo</th>'+
+						'<th style="width: 11%;" class="info centrado">Puesto solicitado</th>'+
+						'<th style="width: 9%;" class="info centrado">Realizado</th>'+
+						'<th style="width: 38%;" class="info centrado">&Aacute;rea</th>'+
+						'<th style="width: 5%;" class="info centrado">Preguntas</th>'+
+						'<th style="width: 5%;" class="info centrado">Aciertos</th>'+
+						'<th style="width: 5%;" class="info centrado">Resultado</th>'+
+						'<th style="width: 4%;" class="info centrado">Ver</th>'+
+					'</tr>');
+					
+				} else {
+					
+					$("#tabla-contenido").append( 
+					 '<tr class="warning">'+
+						'<th style="width: 38%;" class="info centrado">'+nombreOidentificador+'</th>'+
+						'<th style="width: 31%;" class="info centrado">Puesto solicitado</th>'+
+						'<th style="width: 9%;" class="info centrado">Realizado</th>'+
+						'<th style="width: 5%;" class="info centrado">Preguntas</th>'+
+						'<th style="width: 5%;" class="info centrado">Resultado</th>'+
+						'<th style="width: 4%;" class="info centrado">Ver</th>'+
+					'</tr>');
+					
+				}
 				
 			data.forEach(function(entry){
 				if(contador % 2 == 0){
@@ -57,28 +73,39 @@ function resultados(name){
 						nombre = entry.aspirante.Nombre;
 						correo = entry.aspirante.email;
 						total = aciertosInt+' de '+preguntasInt+ '<br>' + porcentaje + '%';
+						$("#tabla-contenido").append( 
+						'<tr '+color+'>'+
+							'<th class="centrado">'+nombre+'</th>'+
+							'<th class="centrado">'+correo+'</th>'+
+							'<th class="centrado">'+entry.aspirante.puesto+'</th>'+
+							'<th class="centrado">'+entry.aspirante.tiempo_inicio+'</th>'+
+							'<th class="centrado">'+area+'</th>'+
+							'<th class="centrado">'+preguntas+'</th>'+
+							'<th class="centrado">'+respuestas+'</th>'+
+							'<th class="centrado">'+total+'</th>'+
+							'<th class="centrado"><a href="#" data-id="'+entry.aspirante.pk_aspirante+'" class="detalle btn btn-info btn-xs" style="color:black">' +
+						  '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></th>' +
+													
+						'</tr>');
 					} else {
 						total = preguntasInt + " preguntas en total";
 						respuestas = "N/A"
 						nombre = entry.aspirante.seccion;
 						correo = "No aplica";
+						$("#tabla-contenido").append( 
+						'<tr '+color+'>'+
+							'<th class="centrado">'+nombre+'</th>'+
+							'<th class="centrado">'+entry.aspirante.puesto+'</th>'+
+							'<th class="centrado">'+entry.aspirante.tiempo_inicio+'</th>'+
+							'<th class="centrado">'+preguntas+'</th>'+
+							'<th class="centrado">'+total+'</th>'+
+							'<th class="centrado"><a href="#" data-id="'+entry.aspirante.pk_aspirante+'" class="detalle btn btn-info btn-xs" style="color:black">' +
+						  '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></th>' +
+													
+						'</tr>');
 					}
 					
 				
-				$("#tabla-contenido").append( 
-				'<tr '+color+'>'+
-					'<th class="centrado">'+nombre+'</th>'+
-					'<th class="centrado">'+correo+'</th>'+
-					'<th class="centrado">'+entry.aspirante.puesto+'</th>'+
-					'<th class="centrado">'+entry.aspirante.tiempo_inicio+'</th>'+
-					'<th class="centrado">'+area+'</th>'+
-					'<th class="centrado">'+preguntas+'</th>'+
-					'<th class="centrado">'+respuestas+'</th>'+
-					'<th class="centrado">'+total+'</th>'+
-					'<th class="centrado"><a href="#" data-id="'+entry.aspirante.pk_aspirante+'" class="detalle btn btn-info btn-xs" style="color:black">' +
-				  '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></th>' +
-											
-				'</tr>');
 				contador++;
 			});
 							

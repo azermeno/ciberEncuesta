@@ -43,6 +43,7 @@ require_once 'php/ver_detalle_resultado_mtd.php';
 				
 			},500);
 			});
+			
 			$("#regresar").on('click',function(){
 				window.history.back();
 			});
@@ -132,35 +133,35 @@ require_once 'php/ver_detalle_resultado_mtd.php';
 								?>
 											 
 											 <h5>
-											 <label for="<?php echo $respuesta['pk_respuesta']  ?>">
-											 <span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true">
-											 </span>
-											 <?php  if(isset($respuesta['contestado'])){//es la que contesto el usuario ?>
-												<span style="background:yellow"><u><i>
-											 <?php }?>
-											 &nbsp;&nbsp;<?php echo $respuesta['respuesta']  ?>
-											<?php if(isset($respuesta['contestado'])){//es la que contesto el usuario
-											?>
-											</u></i></span>
-											 <?php } ?>
-											 </label>
+												<label for="<?php echo $respuesta['pk_respuesta']  ?>">
+												 <span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true">
+												 </span>
+												 <?php  if(isset($respuesta['contestado'])){//es la que contesto el usuario ?>
+													<span style="background:yellow"><u><i>
+												 <?php }?>
+												 &nbsp;&nbsp;<?php echo $respuesta['respuesta']  ?>
+												<?php if(isset($respuesta['contestado'])){//es la que contesto el usuario
+												?>
+												</u></i></span>
+												 <?php } ?>
+												 </label>
 											 </h5>
 									 <?php } else {
 												
 										?>
 													
-													 <h5>
-											 <label for="<?php echo $respuesta['pk_respuesta']  ?>">
-											 <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
-											 </span>
-											 <?php  if(isset($respuesta['contestado'])){//es la que contesto el usuario ?> 
-										          <span style="background:yellow"><u><i>
-													 <?php }?>
-											 &nbsp;&nbsp;<?php echo $respuesta['respuesta']  ?>
-													 <?php if(isset($respuesta['contestado'])){?>
-													 </u></i></span>
-													 <?php } ?>
-											 </label>
+											 <h5>
+												 <label for="<?php echo $respuesta['pk_respuesta']  ?>">
+												 <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
+												 </span>
+												 <?php  if(isset($respuesta['contestado'])){//es la que contesto el usuario ?> 
+													  <span style="background:yellow"><u><i>
+														 <?php }?>
+												 &nbsp;&nbsp;<?php echo $respuesta['respuesta']  ?>
+														 <?php if(isset($respuesta['contestado'])){?>
+														 </u></i></span>
+														 <?php } ?>
+												 </label>
 											 </h5>
 								<?php
 											}

@@ -196,7 +196,7 @@
 					
 		   if ($correcto==1) { // si fue correcto en mysql y mssql
 			    //Mandamos a llamar el ws de NuevoTicketPorEncuesta
-					/*if($indicadorNuevo < 75){
+					/*if($indicadorNuevo < 77){
 					$cliente = new SoapClient('http:192.168.0.211:700/servicio.asmx?wsdl');
 							$datos = array(
 						"unidad" => $_SESSION['unidad'],

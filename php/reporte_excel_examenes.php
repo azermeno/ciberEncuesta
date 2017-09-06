@@ -63,11 +63,9 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 			
 			$sql = "SELECT c.comentario, pre.pregunta, r.respuesta, s.seccion, a.pk_aspirante, a.Nombre, a.email, a.tiempo_inicio, p.puesto, p.pk_puesto ".
 			"FROM aspirante as a,puesto as p, seccion as s, contestado as c, respuesta as r, pregunta as pre ".
-			"WHERE a.fk_puesto=p.pk_puesto && p.pk_puesto= {$examen} && substring(a.tiempo_inicio,1,7) = '{$fecha}' && s.pk_seccion=a.fk_seccion && a.pk_aspirante=c.fk_aspirante && c.fk_respuesta=r.pk_respuesta && r.fk_pregunta=pre.pk_pregunta ORDER BY a.pk_aspirante DESC;";
+			"WHERE a.fk_puesto=p.pk_puesto && p.pk_puesto= {$examen} && substring(a.tiempo_inicio,1,7) = '{$fecha}' && s.pk_seccion=a.fk_seccion && a.pk_aspirante=c.fk_aspirante && c.fk_respuesta=r.pk_respuesta && r.fk_pregunta=pre.pk_pregunta ORDER BY a.pk_aspirante DESC,pre.pk_pregunta;";
 			
 		}
-		
-		error_log($sql);
 		
 		$result = $conn->query($sql);
 
@@ -128,7 +126,6 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 				$returnJs = $aspirantes;
 				
 			}
-			error_log(print_r($returnJs,true));			
 			$BanderaPrimerValor = false;
 			$contadorFilas = 1;
 			$contadorColumnas = 65;//asii = A y 90 = Z
@@ -229,6 +226,12 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 							$nombreExcel = $usuario["puesto"]."_".$fecha;	
 					 }
 					 
+					if($banCambioEncuesta != $usuario["tiempo_inicio"]){
+						
+						$contadorFilas++;
+						$banCambioEncuesta = $usuario["tiempo_inicio"];
+						
+					} 
 					 $contadorColumnas = 65;
 					$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["seccion"]);
@@ -246,14 +249,6 @@ require_once dirname(__FILE__) . '/PHPExcel-1.8/Classes/PHPExcel.php';
 					->setCellValue(chr($contadorColumnas).$contadorFilas, $usuario["comentario"]);
 					$contadorFilas++;
 					
-					if($banCambioEncuesta != $usuario["tiempo_inicio"]){
-						
-						$contadorFilas++;
-						
-					} else {
-						
-						$banCambioEncuesta = $usuario["tiempo_inicio"];
-					}
 				
 				}
 			};

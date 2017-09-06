@@ -45,15 +45,24 @@ function pulsar(e) {
 							conRespuesta = 0;
 							conRespuestaTemp = 1;
 							cuestionario += '<div class="well well-sm">';
-							cuestionario += '<h4>'+numero+'.- '+entry['pregunta']+'</h4>'+
-							'<div class="table-responsive"><table class="table">'+
-							'<tr>';
 							data.respuestas.forEach(function(temp){
 								
 								if(entry['pk_pregunta'] == temp['fk_pregunta']){
 									conRespuesta ++;
 								}	
 							});	
+							if(conRespuesta == 0){
+								
+								cuestionario += '<h4>'+entry['pregunta']+'</h4>'+
+								'<div class="table-responsive"><table class="table">'+
+								'<tr>';
+							} else {
+								
+								cuestionario += '<h4>'+numero+'.- '+entry['pregunta']+'</h4>'+
+								'<div class="table-responsive"><table class="table">'+
+								'<tr>';
+								numero++;
+							}	
 									
 							data.respuestas.forEach(function(respuesta){
 								
@@ -98,7 +107,7 @@ function pulsar(e) {
 							}	
 							cuestionario += '</div></div>';
 							
-							numero++;
+							
 						
 					});
 						cuestionario += "</div>";

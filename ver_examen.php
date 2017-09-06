@@ -82,7 +82,7 @@ session_start();
 							
 							<br>
 							<div id="preguntas" style="text-align:left; width: 80%; margin: 0 auto">
-							<input tipe="hidden" style="display: none" id="idPuesto" value="">
+							<input type="hidden" style="display: none" id="idPuesto" value="">
 							
 							</div>
 
@@ -111,8 +111,13 @@ session_start();
 											<br>
 											<input type="Text" class="form-control" id="inputText" placeholder="Crear nuevo identificador">
 											<br>
-											  <label style="font-size:150%" id="estadoEncuesta"></label> 
+											<div>
+												<input type="hidden" id="urlParaCopiar" style="display: none"  value="">
+												<label style="font-size:100%" id="estadoEncuesta"></label><!--span id="identificador"></span-->
+											</div>											  
 												<br>
+												<button onclick="copiarAlPortapapeles('identificador')" style="margin-bottom: 10px;">Copiar url</button>
+												
 											<div>												
 											  <label style="font-size:150%" id="estadoEncuestaBoton"></label>
 											  <br>
