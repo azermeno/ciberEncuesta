@@ -24,7 +24,7 @@ function resultados(name){
 					 '<tr class="warning">'+
 						'<th style="width: 12%;" class="info centrado">'+nombreOidentificador+'</th>'+
 						'<th style="width: 11%;" class="info centrado">Correo</th>'+
-						'<th style="width: 11%;" class="info centrado">Puesto solicitado</th>'+
+						'<th style="width: 11%;" class="info centrado">Ex&aacute;men</th>'+
 						'<th style="width: 9%;" class="info centrado">Realizado</th>'+
 						'<th style="width: 38%;" class="info centrado">&Aacute;rea</th>'+
 						'<th style="width: 5%;" class="info centrado">Preguntas</th>'+
@@ -38,7 +38,7 @@ function resultados(name){
 					$("#tabla-contenido").append( 
 					 '<tr class="warning">'+
 						'<th style="width: 38%;" class="info centrado">'+nombreOidentificador+'</th>'+
-						'<th style="width: 31%;" class="info centrado">Puesto solicitado</th>'+
+						'<th style="width: 31%;" class="info centrado">Encuesta</th>'+
 						'<th style="width: 9%;" class="info centrado">Realizado</th>'+
 						'<th style="width: 5%;" class="info centrado">Preguntas</th>'+
 						'<th style="width: 5%;" class="info centrado">Resultado</th>'+

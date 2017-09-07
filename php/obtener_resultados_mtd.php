@@ -53,16 +53,14 @@
 						
 					foreach($aspirantes as $aspirante){
 						$temporal = array();
-						$sql = "SELECT a.area,a.pk_area ,COUNT(p.pk_pregunta) as total FROM area as a,pregunta as p WHERE  a.fk_puesto={$aspirante['pk_puesto']} && p.fk_area=a.pk_area GROUP by a.area; ";
+						$sql = "SELECT a.area,a.pk_area ,COUNT(p.pk_pregunta) as total FROM area as a,pregunta as p WHERE  a.fk_puesto={$aspirante['pk_puesto']} && p.fk_area=a.pk_area && p.pk_pregunta in ( select r.fk_pregunta from respuesta as r where r.fk_pregunta = p.pk_pregunta) GROUP by a.area; ";
 						$result = $conn->query($sql);
-						
 						
 						if ($result->num_rows > 0) {
 							// output data of each row
 									while($row = $result->fetch_assoc()) {
 										
 										$sql = "SELECT count(r.pk_respuesta)  as correctas FROM contestado as c, respuesta as r, pregunta as p WHERE p.fk_area={$row['pk_area']} && r.fk_pregunta=p.pk_pregunta && r.correcta=1 && c.fk_respuesta=r.pk_respuesta && c.fk_aspirante={$aspirante['pk_aspirante']}";
-										
 										$result1 = $conn->query($sql);
 										if ($result1->num_rows > 0) {
 										// output data of each row

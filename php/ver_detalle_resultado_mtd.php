@@ -101,7 +101,7 @@ if($idUsuario ==0){
 												
 											}
 											$returnJs[]= array_merge(array('aspirante'=>$aspirante),array('areas'=>$temporal));
-											error_log(print_R($returnJs,true));
+											//error_log(print_R($returnJs,true));
 								}
 								
 							}
@@ -111,8 +111,7 @@ if($idUsuario ==0){
 				}
 					
 			}
-			error_log(print_R($returnJs,true));
-			error_log("Prueba");
+			
 			$result->free();
 			$result1->free();
 			$result2->free();
