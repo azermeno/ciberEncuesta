@@ -106,34 +106,39 @@ if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
 								  $ordenRespuesta=1;
 							    	foreach($celdas as $celda){
 										
-										$respuestaProvicional = strval($file[$celda]);
-										if($file[$celda] === false){
+										if(isset($file[$celda])){
+											$respuestaProvicional = strval($file[$celda]);
+											if($file[$celda] === false){
+												
+												$respuestaProvicional = "Falso";
+											}
 											
-											$respuestaProvicional = "Falso";
-										}
-										
-										if($file[$celda] === true){
+											if($file[$celda] === true){
+												
+												$respuestaProvicional = "Verdadero";
+												
+											}
 											
-											$respuestaProvicional = "Verdadero";
-											
-										}
-										
-										if(isset($file[$celda]) && ($file[$celda]=='0' || $file[$celda]!=NULL )){
+											if(isset($file[$celda]) && ($file[$celda]=='0' || $file[$celda]!=NULL )){
 
-											$conn->query("INSERT INTO respuesta(respuesta,correcta,fk_pregunta,respuestaOrden)
-											VALUE('{$respuestaProvicional}',0,{$id_pregunta},{$ordenRespuesta})");
-											if($conn->affected_rows!=1){
-												
-												$correcto=false;
-												$conn->query("ROLLBACK");
-												$conn->close();									
-												break 2;
-											} 
-											$ordenRespuesta ++;
-												
-										} else {
-										  break;
-										  }
+												$conn->query("INSERT INTO respuesta(respuesta,correcta,fk_pregunta,respuestaOrden)
+												VALUE('{$respuestaProvicional}',0,{$id_pregunta},{$ordenRespuesta})");
+												if($conn->affected_rows!=1){
+													
+													$correcto=false;
+													$conn->query("ROLLBACK");
+													$conn->close();									
+													break 2;
+												} 
+												$ordenRespuesta ++;
+													
+											} else {
+											  break;
+											  }
+										}else {
+											
+											break;
+										}
 
 									}//fin foreach celda
 

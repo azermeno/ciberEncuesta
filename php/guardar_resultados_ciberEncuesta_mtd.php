@@ -194,10 +194,10 @@
 					 $correcto = 0;
 				 }
 					
-		   if ($correcto==1) { // si fue correcto en mysql y mssql
+		  if ($correcto==1) { // si fue correcto en mysql y mssql
 			    //Mandamos a llamar el ws de NuevoTicketPorEncuesta
-					/*if($indicadorNuevo < 77){
-					$cliente = new SoapClient('http:192.168.0.211:700/servicio.asmx?wsdl');
+					if($indicadorNuevo < 77){
+					$cliente = new SoapClient('http://localhost:9195/servicio.asmx?wsdl');
 							$datos = array(
 						"unidad" => $_SESSION['unidad'],
 						"calificacion" => $indicadorNuevo,
@@ -212,7 +212,7 @@
 							" {$_SESSION['encuesta']}, tiene una calificación menor a 85 y no se pudo crear su incidencia ');";
 							$conn->query($sql);
 						}
-					}*/
+					}
 					
 				$tipoAcceso = $contetadoManualmente == 1 ? ' de forma manual' : ' de forma acutomatica';
 			    $sql = "INSERT INTO log(accion) VALUES('La unidad {$_SESSION['txtNombre']} con el códogo".
