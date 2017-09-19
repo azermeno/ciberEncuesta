@@ -98,8 +98,7 @@ var anioMesEnCurso;
 								 totalUnidadesSinEncuestar++;
 						  } 
 					 });							 
-				 
-				 
+				 				 
 					
 					unidadesSinEncuestar += "</tbody>";
 					
@@ -130,7 +129,6 @@ var anioMesEnCurso;
 				  alert("Por el momento no esta disponible el servicio, intente m\u00E1s tarde");
 				  
 			  });
-					
 		}
 		
 		function window_size(){
@@ -147,7 +145,6 @@ var anioMesEnCurso;
 				$("#form-send").css('width','50%');
 				
 			}
-			
 		}
 		
 		function realizarEncuesta(){
@@ -161,13 +158,13 @@ var anioMesEnCurso;
 			$("#puesto").append(
 			'<option value="0" style="background: white; color:black;">&Aacutereas a seleccionar</option>'
 			)
-			
 		}
 		
 		function changeMes(){
 			$("#unidad").empty();
 			$("#preguntas").empty();
 			$("#unidad").selectpicker('refresh');
+			
 			if(banderaUnidad==true){
 												
 				banderaUnidad = false;
@@ -203,6 +200,7 @@ var anioMesEnCurso;
 					});
 					
 					var radioSeleccionado = $('input:radio[name=comentarios]:checked').val();
+					
 					if(radioSeleccionado == 0 || radioSeleccionado ==2){
 						
 						unidadesMySQL.forEach(function(entry){
@@ -237,8 +235,6 @@ var anioMesEnCurso;
 				$("#contestadas").html(unidadesContestadasManual+" c/m y "+(unidadesContestadas-unidadesContestadasManual)+" c/a, en total "+unidadesContestadas);
 			} else {
 				
-				 
-				  
 					//Agretamos el valor de unidades encuestadas
 					$("#contestadas").html(unidadesContestadas);
 			}
@@ -282,17 +278,17 @@ var anioMesEnCurso;
 				
 				 window_size();
 			
-			$(window).resize(window_size);
+				$(window).resize(window_size);
 				
-			obtenerMes();
-			
-			$("#mes").on("change",changeMes);
-			$("#unidad").on("change",function(){
+				obtenerMes();
 				
-				$("#preguntas").html('');
-			});
+				$("#mes").on("change",changeMes);
+				$("#unidad").on("change",function(){
+				
+					$("#preguntas").html('');
+				});
 			
-			$("#form-send").submit(function(event){
+				$("#form-send").submit(function(event){
 				
 					 event.preventDefault();
 					
