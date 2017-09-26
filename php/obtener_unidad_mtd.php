@@ -19,9 +19,7 @@
 			$mes = isset($_POST['mes']) ? $_POST['mes'] : 0;   
 						 
 			//OBTENER LAS UNIDADES DEL ULTIMO MES
-						 
-			//$sql = "SELECT m.*,u.req_codigo FROM mesEncuesta as m, aspirante as a, unidad as u WHERE m.fk_mes = {$mes} AND //a.fk_mesEncuesta=m.pk_mesEncuesta AND u.pk_unidad=m.fk_unidad GROUP BY m.pk_mesEncuesta;";
-			
+						
 			$sql = "SELECT m.*,u.req_codigo,a.contestadoManual FROM mesEncuesta as m, aspirante as a, unidad as u WHERE m.fk_mes ={$mes} AND a.fk_mesEncuesta=m.pk_mesEncuesta AND u.pk_unidad=m.fk_unidad GROUP BY m.pk_mesEncuesta;";
 						  
 						
