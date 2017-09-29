@@ -55,3 +55,29 @@ input[readonly] {
 	
 	
 }
+.fadebox {
+display: none;
+position: absolute;
+top: 0%;
+left: 0%;
+width: 100%;
+height: 100%;
+background-color: black;
+z-index:1001;
+-moz-opacity: 0.8;
+opacity:.80;
+filter: alpha(opacity=80);
+position:fixed;
+}
+.overbox {
+display: none;
+position: absolute;
+top: 15%;
+left: 15%;
+width: 70%;
+height: 70%;
+z-index:1002;
+overflow: auto;
+position:fixed;
+
+}

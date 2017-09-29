@@ -19,7 +19,7 @@ $basePath = "../imgEncuesta/";
 // ALWAYS put the final slash (/)
 
 //echo "http://" . $host . $url;
-$baseUrl = "http://".$_SERVER["HTTP_HOST"]."/ciberEncuestaPHP/imgEncuestas/";
+$baseUrl = "http://".$_SERVER["HTTP_HOST"]."/ciberEncuestaPHP/imgEncuesta/";
 // Done. Now test it!
 // No need to modify anything below this line
 //----------------------------------------------------

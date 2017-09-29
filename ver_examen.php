@@ -19,19 +19,31 @@ session_start();
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="css/bootstrap-switch.css">
 		<link rel="stylesheet" href="css/examen.css">
+		`
+		<script src="https://cdn.ckeditor.com/4.6.1/standard-all/ckeditor.js"></script>
         <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
         <script src="js/bootstrap.min.js"></script>
 		<script src="js/bootstrap-switch.js"></script>
 		<script src="js/jquery.blockUI.js"></script>
 		<script src="js/ver_examen.js" type="text/javascript"></script>
+		
        
 
 </style>
     </head>
     <body>
+	<div id="over" class="overbox">
+		<div style="text-align:center">
+			<button id="guardaCkeditor" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
+			<button id="cancelarCkeditor" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
+		</div>			
+		<textarea id="editor1" style="height=90%">
+		</textarea>
+	</div>
+    <div id="fade" class="fadebox">&nbsp;</div>
 
       <?php include_once 'nav_menu.php'; ?>
-
+		
         <div class="container centrado">
             <div class="starter-template">
                <img src="img/logo.jpg" height="200" id="logo">
@@ -139,7 +151,7 @@ session_start();
 							<div id="preguntasEncuesta" style="text-align:left; width: 80%; margin: 0 auto">
 							</div>
 							</form>
-
+							
 						</div>
 					</div>
 					<div id="encuestaCompuesta" class="tab-pane fade">
@@ -188,7 +200,9 @@ session_start();
 					</div>
 			    </div>
             </div>
+		<a href="javascript:showLightbox();">Show LightBox</a>
+        <a href="javascript:hideLightbox();">HideLightBox</a>
         </div><!-- /.container -->
-
+		<script src="js/ckeditorPersonalizado.js" type="text/javascript"></script>
     </body>
 </html>
