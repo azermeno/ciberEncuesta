@@ -34,8 +34,8 @@ session_start();
     <body>
 	<div id="over" class="overbox">
 		<div style="text-align:center">
-			<button id="guardaCkeditor" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
-			<button id="cancelarCkeditor" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
+			<button id="guardaCkeditor" type="button" class="btn btn-success" onclick="guardarPreguntaRespuesta()"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
+			<button id="cancelarCkeditor" type="button" onclick="hideLightbox()" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
 		</div>			
 		<textarea id="editor1" style="height=90%">
 		</textarea>
@@ -133,10 +133,10 @@ session_start();
 											<div>												
 											  <label style="font-size:150%" id="estadoEncuestaBoton"></label>
 											  <br>
-												<button id="actualiza" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar ponderaci&oacute;n</button>
+											  <button id="actualiza" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar ponderaci&oacute;n</button> <button id="actualizaPreguntaRespuesta" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar pregunta/respuesta</button>
 												<div id="guardarCambios" style="display:none">
-												<button id="guarda" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
-												<button id="cancelar" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
+													<button id="guarda" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
+													<button id="cancelar" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
 												</div>											  
 											 </div>
 											</div>
@@ -148,8 +148,8 @@ session_start();
 							
 							<br>
 							<form  id="form-ponderacion" >
-							<div id="preguntasEncuesta" style="text-align:left; width: 80%; margin: 0 auto">
-							</div>
+								<div id="preguntasEncuesta" style="text-align:left; width: 80%; margin: 0 auto">
+								</div>
 							</form>
 							
 						</div>

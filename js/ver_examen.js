@@ -1,15 +1,8 @@
 var informacion = [];
 var ponderaciones = [];
-var banIdentificador = false; 
+var banIdentificador = false;
+var idPreguntaRespesta = ''; 
 
-function showLightbox() {
-    document.getElementById('over').style.display='block';
-    document.getElementById('fade').style.display='block';
-}
-function hideLightbox() {
-    document.getElementById('over').style.display='none';
-    document.getElementById('fade').style.display='none';
-}
 	function obtenerPuestos(){
 		var selectExamen ='';
 		var selectEncuesta ='';
@@ -152,7 +145,46 @@ function hideLightbox() {
 					  document.execCommand("copy");
 					  document.body.removeChild(aux);
 					  
-					  }
+		}
+		
+		function modificarPreguntaRespuesta(){
+			
+			console.log($(this).attr("id"));
+			
+			idPreguntaRespesta = $(this).attr("id").substring(1);
+			console.log(idPreguntaRespesta);
+			console.log($("#"+idPreguntaRespesta).html());
+			console.log($("#"+idPreguntaRespesta).text());
+			
+			//$("#editor1").html($("#"+id).html());
+			CKEDITOR.instances['editor1'].setData($("#"+idPreguntaRespesta).html());
+			console.log($("#editor1").html());
+			//inicializaCKeditor();
+			showLightbox();
+			
+		}
+		
+		function guardarPreguntaRespuesta(){
+			
+			alert("guardar");
+			var elementoHTML = document.getElementById(idPreguntaRespesta);
+			elementoHTML.innerHTML = CKEDITOR.instances['editor1'].getData();
+			elementoHTML.focus();
+			elementoHTML.scrollIntoView();
+			
+			
+			hideLightbox();
+			idPreguntaRespesta = "";
+		}
+		
+		function showLightbox() {
+			document.getElementById('over').style.display='block';
+			document.getElementById('fade').style.display='block';
+		}
+		function hideLightbox() {
+			document.getElementById('over').style.display='none';
+			document.getElementById('fade').style.display='none';
+		}
 		
 	$(function () {
 		
@@ -236,6 +268,7 @@ function hideLightbox() {
 		
 		
 		});
+		
 	  $("#form-send1").submit(function(event){
 		
 			 event.preventDefault();
@@ -287,7 +320,7 @@ function hideLightbox() {
 									
 								}
 								cuestionario += '</div><div class="well well-sm">';
-								cuestionario += '<h3>'+numero+'.- ' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;<label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
+								cuestionario += '<h3><button type="button" class="btn btn-warning editarPyR" id="PPP'+entry.pk_pregunta+'"><span class="glyphicon glyphicon-edit"></span></button>&nbsp;&nbsp;&nbsp;'+numero+'.- <span id="PP'+entry.pk_pregunta+'">' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;</span><label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
 								cuestionario += '<div class="table-responsive"><table class="table">';
 								numero++;
 								ponderaciones['P'+entry.pk_pregunta] = entry.preguntaPonderacion;
@@ -296,9 +329,8 @@ function hideLightbox() {
 								
 								respuesta = entry.respuesta == '.' ? "(SE PERMITE COMENTARIO)" : entry.respuesta;
 									
-								cuestionario += '<tr><th><h5><label for="'+entry['pk_respuesta']+'">'+
-								'<span style="color:blue" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>&nbsp;'+
-								respuesta+'</label></h5></th><th class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="R'+entry.pk_respuesta+'">'+entry.respuestaPonderacion+'</span></th></tr>';
+								cuestionario += '<tr><th><h5><label for="'+entry['pk_respuesta']+'"><button type="button" class="btn btn-warning editarPyR" id="RRR'+entry.pk_respuesta+'"><span class="glyphicon glyphicon-edit"></span></button>&nbsp;&nbsp;&nbsp;'+
+								'<span style="color:blue" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>&nbsp;<span id="RR'+entry.pk_respuesta+'">'+respuesta+'</span></label></h5></th><th class="ponderacion" style="weight:15%">Ponderaci&oacute;n: &nbsp;<span id="R'+entry.pk_respuesta+'">'+entry.respuestaPonderacion+'</span></th></tr>';
 								
 								ponderaciones['R'+entry.pk_respuesta] = entry.respuestaPonderacion;
 								
@@ -314,7 +346,7 @@ function hideLightbox() {
 					
 					}
 		
-	
+					$(".editarPyR").on("click",modificarPreguntaRespuesta);
 				}).fail(function(){
 						
 						alert("Por el momento no esta disponible el apartado de encuestas, intente m\u00E1s tarde (Puedes intentarlo nuevamente..)");
