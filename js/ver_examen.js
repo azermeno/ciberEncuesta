@@ -169,8 +169,23 @@ var idPreguntaRespesta = '';
 			alert("guardar");
 			var elementoHTML = document.getElementById(idPreguntaRespesta);
 			elementoHTML.innerHTML = CKEDITOR.instances['editor1'].getData();
-			elementoHTML.focus();
-			elementoHTML.scrollIntoView();
+			console.log(CKEDITOR.instances['editor1'].getData());
+			//elementoHTML.focus();
+			//elementoHTML.scrollIntoView();
+			
+			$.ajax({
+				method:"POST",
+				url:"php/editar_pregunta_respuesta_mtd.php",
+				dataType:"json",
+				data: {editado:CKEDITOR.instances['editor1'].getData(),idPreguntaRespesta:idPreguntaRespesta}
+			}).done(function(entry){
+				
+				
+			}).fail(function(){
+				
+				
+				
+			});
 			
 			
 			hideLightbox();
@@ -186,9 +201,81 @@ var idPreguntaRespesta = '';
 			document.getElementById('fade').style.display='none';
 		}
 		
+		function mostrarEditarPreguntaRespuesta(){
+			
+			$(".editarPyR").show();
+			$("#cancelarPreguntaRespuesta").show();
+			$("#actualiza").hide();
+			$("#actualizaPreguntaRespuesta").hide();
+		}
+		function cancelarPreguntaRespuesta(){
+			
+			$(".editarPyR").hide();
+			$("#cancelarPreguntaRespuesta").hide();
+			$("#actualiza").show();
+			$("#actualizaPreguntaRespuesta").show();
+		}
+		
 	$(function () {
 		
+		//CKEDITOR
+		CKEDITOR.replace( 'editor1', {
+		// Define the toolbar: http://docs.ckeditor.com/#!/guide/dev_toolbar
+		// The standard preset from CDN which we used as a base provides more features than we need.
+		// Also by default it comes with a 2-line toolbar. Here we put all buttons in a single row.
+		toolbar: [
+			{ name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+			{ name: 'styles', items: [ 'Styles', 'Format' ] },
+			{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+			{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+			{ name: 'links', items: [ 'Link', 'Unlink' ] },
+			{ name: 'insert', items: [ 'Image', 'EmbedSemantic', 'Table' ] },
+			{ name: 'tools', items: [ 'Maximize' ] },
+			{ name: 'editing', items: [ 'Scayt' ] }
+		],
+		
+		// Since we define all configuration options here, let's instruct CKEditor to not load config.js which it does by default.
+		// One HTTP request less will result in a faster startup time.
+		// For more information check http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-customConfig
+		customConfig: '',
+		// Enabling extra plugins, available in the standard-all preset: http://ckeditor.com/presets-all
+		extraPlugins: 'autoembed,embedsemantic,image2,uploadimage,uploadfile',
+		/*********************** File management support ***********************/
+		// In order to turn on support for file uploads, CKEditor has to be configured to use some server side
+		// solution with file upload/management capabilities, like for example CKFinder.
+		// For more information see http://docs.ckeditor.com/#!/guide/dev_ckfinder_integration
+		// Uncomment and correct these lines after you setup your local CKFinder instance.
+		filebrowserBrowseUrl: 'visorImagenes.php',
+		filebrowserUploadUrl: 'php/subirFoto.php',
+		
+		/*********************** File management support ***********************/
+		// Remove the default image plugin because image2, which offers captions for images, was enabled above.
+		removePlugins: 'image',
+		// Make the editing area bigger than default.
+		height: 461,
+		// An array of stylesheets to style the WYSIWYG area.
+		// Note: it is recommended to keep your own styles in a separate file in order to make future updates painless.
+		//contentsCss: [ 'https://cdn.ckeditor.com/4.6.1/standard-all/contents.css', 'mystyles.css' ],
+		// This is optional, but will let us define multiple different styles for multiple editors using the same CSS file.
+		//bodyClass: 'article-editor',
+		// Reduce the list of block elements listed in the Format dropdown to the most commonly used.
+		//format_tags: 'p;h1;h2;h3;pre',
+		// Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+		//removeDialogTabs: 'image:advanced;link:advanced',
+		// Define the list of styles which should be available in the Styles dropdown list.
+		// If the "class" attribute is used to style an element, make sure to define the style for the class in "mystyles.css"
+		// (and on your website so that it rendered in the same way).
+		// Note: by default CKEditor looks for styles.js file. Defining stylesSet inline (as below) stops CKEditor from loading
+		// that file, which means one HTTP request less (and a faster startup).
+		// For more information see http://docs.ckeditor.com/#!/guide/dev_styles
+		
+	} );
+	//Termina CDEDITOR
+		
 			obtenerPuestos();
+			
+		$("#actualizaPreguntaRespuesta").on("click",mostrarEditarPreguntaRespuesta);	
+		$("#cancelarPreguntaRespuesta").on("click",cancelarPreguntaRespuesta);	
 	
 	   $("#form-send").submit(function(event){
 		
@@ -320,7 +407,7 @@ var idPreguntaRespesta = '';
 									
 								}
 								cuestionario += '</div><div class="well well-sm">';
-								cuestionario += '<h3><button type="button" class="btn btn-warning editarPyR" id="PPP'+entry.pk_pregunta+'"><span class="glyphicon glyphicon-edit"></span></button>&nbsp;&nbsp;&nbsp;'+numero+'.- <span id="PP'+entry.pk_pregunta+'">' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;</span><label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
+								cuestionario += '<h3><button type="button" class="btn btn-warning editarPyR" id="PPP'+entry.pk_pregunta+'" style="display:none"><span class="glyphicon glyphicon-edit"></span></button>&nbsp;&nbsp;&nbsp;'+numero+'.- <span id="PP'+entry.pk_pregunta+'">' + entry['pregunta'] + '&nbsp;&nbsp;&nbsp;&nbsp;</span><label class="ponderacion">Ponderaci&oacute;n: &nbsp;<span id="P'+entry.pk_pregunta+'">'+entry.preguntaPonderacion+'</span></label></h3>';
 								cuestionario += '<div class="table-responsive"><table class="table">';
 								numero++;
 								ponderaciones['P'+entry.pk_pregunta] = entry.preguntaPonderacion;
@@ -329,7 +416,7 @@ var idPreguntaRespesta = '';
 								
 								respuesta = entry.respuesta == '.' ? "(SE PERMITE COMENTARIO)" : entry.respuesta;
 									
-								cuestionario += '<tr><th><h5><label for="'+entry['pk_respuesta']+'"><button type="button" class="btn btn-warning editarPyR" id="RRR'+entry.pk_respuesta+'"><span class="glyphicon glyphicon-edit"></span></button>&nbsp;&nbsp;&nbsp;'+
+								cuestionario += '<tr><th><h5><label for="'+entry['pk_respuesta']+'"><button type="button" class="btn btn-warning editarPyR" id="RRR'+entry.pk_respuesta+'" style="display:none"><span class="glyphicon glyphicon-edit"></span></button>&nbsp;&nbsp;&nbsp;'+
 								'<span style="color:blue" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>&nbsp;<span id="RR'+entry.pk_respuesta+'">'+respuesta+'</span></label></h5></th><th class="ponderacion" style="weight:15%">Ponderaci&oacute;n: &nbsp;<span id="R'+entry.pk_respuesta+'">'+entry.respuestaPonderacion+'</span></th></tr>';
 								
 								ponderaciones['R'+entry.pk_respuesta] = entry.respuestaPonderacion;
@@ -362,6 +449,7 @@ var idPreguntaRespesta = '';
 		function habilitarSubmit(){
 			     
 				$("#actualiza").hide();
+				$("#actualizaPreguntaRespuesta").hide();
 				$("#guardarCambios").show();
 				 acomodarPrioridad(true);
 			
@@ -372,6 +460,7 @@ var idPreguntaRespesta = '';
 		function cancelar(){
 			
 			$("#actualiza").show();
+			$("#actualizaPreguntaRespuesta").show();
 			$("#guardarCambios").hide();
 			acomodarPrioridad(false);
 			 			

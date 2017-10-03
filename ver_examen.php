@@ -27,9 +27,7 @@ session_start();
 		<script src="js/jquery.blockUI.js"></script>
 		<script src="js/ver_examen.js" type="text/javascript"></script>
 		
-       
 
-</style>
     </head>
     <body>
 	<div id="over" class="overbox">
@@ -133,11 +131,15 @@ session_start();
 											<div>												
 											  <label style="font-size:150%" id="estadoEncuestaBoton"></label>
 											  <br>
-											  <button id="actualiza" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar ponderaci&oacute;n</button> <button id="actualizaPreguntaRespuesta" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar pregunta/respuesta</button>
+											  <button id="actualizaPreguntaRespuesta" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar pregunta/respuesta</button>
+											  <button id="actualiza" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Modificar ponderaci&oacute;n
+											  </button> 
 												<div id="guardarCambios" style="display:none">
 													<button id="guarda" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="button"></span>&nbsp;Guardar</button>
 													<button id="cancelar" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
-												</div>											  
+												</div>
+												
+												<button id="cancelarPreguntaRespuesta" type="button" class="btn btn-danger" style="display:none"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Cancelar</button>
 											 </div>
 											</div>
 											
@@ -203,6 +205,6 @@ session_start();
 		<a href="javascript:showLightbox();">Show LightBox</a>
         <a href="javascript:hideLightbox();">HideLightBox</a>
         </div><!-- /.container -->
-		<script src="js/ckeditorPersonalizado.js" type="text/javascript"></script>
+		
     </body>
 </html>
