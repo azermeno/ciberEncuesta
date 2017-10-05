@@ -144,6 +144,7 @@ var idPreguntaRespesta = '';
 					  aux.select();
 					  document.execCommand("copy");
 					  document.body.removeChild(aux);
+					  cancelarPreguntaRespuesta();
 					  
 		}
 		
@@ -180,10 +181,19 @@ var idPreguntaRespesta = '';
 				data: {editado:CKEDITOR.instances['editor1'].getData(),idPreguntaRespesta:idPreguntaRespesta}
 			}).done(function(entry){
 				
-				
+				if(entry.asignado === true){
+					alert("guardar");
+					var elementoHTML = document.getElementById(idPreguntaRespesta);
+					elementoHTML.innerHTML = CKEDITOR.instances['editor1'].getData();
+					
+				} else {
+					
+					alert("No se realizo ning\u00fan cambio");
+					
+				}
 			}).fail(function(){
 				
-				
+				alert("Por el momento no est\u00e1 disponible la funcionalidad, intente m\u00e1s tarde");
 				
 			});
 			

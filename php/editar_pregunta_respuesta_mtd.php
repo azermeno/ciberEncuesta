@@ -12,20 +12,30 @@
 				die("Connection failed: " . $conn->connect_error);
 			} 
 			$conn->set_charset("utf8");
-			$returnJs = array();
-			$editado = isset($_POST['editado']) ? $_POST['editado'] : 0;
-			$idPreguntaRespesta = isset($_POST['idPreguntaRespesta']) ? $_POST['idPreguntaRespesta'] : 0;
+			$returnJs = array();						
+			$editado = isset($_POST['editado']) ? $conn->real_escape_string($_POST['editado']) : 0;
+			$idPreguntaRespesta = isset($_POST['idPreguntaRespesta']) ? $conn->real_escape_string($_POST['idPreguntaRespesta']) : 0;
 			
-			 $sql = "UPDATE puesto set prioridad={$prioridad} where pk_puesto={$pk_puesto};";
-					 
+			$id = substr($idPreguntaRespesta,2);
+			
+			if( substr($idPreguntaRespesta,0,1) === "P"){
+				
+				$sql = "UPDATE pregunta set pregunta='{$editado}' where pk_pregunta={$id};";
+				
+			} else {
+				
+				$sql = "UPDATE respuesta set respuesta='{$editado}' where pk_respuesta={$id};";
+				
+			}
+						
 					 $conn->query($sql);
 							if ($conn->affected_rows > 0){
-								error_log("UPDATE de prioridad correcto");
-								$registroModificado ++;
+								
 								$returnJs['asignado'] = true;
+								
 							} else {
 								
-								error_log("Error en UPDATE de prioridad o no se modifico");
+								$returnJs['asignado'] = false;
 								
 							}
 											 
