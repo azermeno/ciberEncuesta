@@ -85,7 +85,6 @@ var idPreguntaRespesta = '';
 				color: '#fff' 
 			} 
 		}); 
-		//console.log(state); // true | false
 				  var id = $(this).attr('data-id');
 				  $.ajax({
 				  method: "POST",
@@ -150,29 +149,17 @@ var idPreguntaRespesta = '';
 		
 		function modificarPreguntaRespuesta(){
 			
-			console.log($(this).attr("id"));
-			
 			idPreguntaRespesta = $(this).attr("id").substring(1);
-			console.log(idPreguntaRespesta);
-			console.log($("#"+idPreguntaRespesta).html());
-			console.log($("#"+idPreguntaRespesta).text());
 			
-			//$("#editor1").html($("#"+id).html());
 			CKEDITOR.instances['editor1'].setData($("#"+idPreguntaRespesta).html());
-			console.log($("#editor1").html());
-			//inicializaCKeditor();
 			showLightbox();
 			
 		}
 		
 		function guardarPreguntaRespuesta(){
 			
-			alert("guardar");
 			var elementoHTML = document.getElementById(idPreguntaRespesta);
 			elementoHTML.innerHTML = CKEDITOR.instances['editor1'].getData();
-			console.log(CKEDITOR.instances['editor1'].getData());
-			//elementoHTML.focus();
-			//elementoHTML.scrollIntoView();
 			
 			$.ajax({
 				method:"POST",

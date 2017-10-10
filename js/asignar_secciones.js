@@ -40,7 +40,7 @@ var banIdentificador = false;
 		 campoEstado = [];
 		 secciones.forEach(function(entry){
 			 
-				fila += '<tr class="warning"><td><b>'+entry.puesto+'</b></td><td><span id="'+entry.pk_puesto+'"></span></td><td id="prioridad'+entry.pk_puesto+'">'+entry.prioridad+'</td><td><button id="agregar'+entry.pk_puesto+'" type="button" class="btn btn-info actualizar" data-codigo="'+entry.pk_puesto+'" data-accion="1"   			style="width:45%;text-align:center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><button id="quitar'+entry.pk_puesto+'" type="button" class="btn btn-danger actualizar" data-codigo="'+entry.pk_puesto+'" data-accion="0" style="width:45%;text-align:center"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td></tr>';
+				fila += '<tr class="warning"><td><b>'+entry.puesto+'</b></td><td><span id="'+entry.pk_puesto+'"></span></td><td id="prioridad'+entry.pk_puesto+'">'+entry.prioridad+'</td><td><span id="sp'+entry.pk_puesto+'"></span><input type="text" id="sesion'+entry.pk_puesto+'" style="display:none"></td><td><button id="agregar'+entry.pk_puesto+'" type="button" class="btn btn-info actualizar" data-codigo="'+entry.pk_puesto+'" data-accion="1" style="width:45%;text-align:center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><button id="quitar'+entry.pk_puesto+'" type="button" class="btn btn-danger actualizar" data-codigo="'+entry.pk_puesto+'" data-accion="0" style="width:45%;text-align:center"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td></tr>';
 			 
 				campoEstado.push(entry.pk_puesto);
 			
@@ -63,17 +63,18 @@ var banIdentificador = false;
 		
 		 var unidad = $("#unidad").val();
 		 var estado = $('input[name=general]:checked').val();
-		
+		 var sesion = $("#sesion"+seccion).val();
+		 console.log(sesion);
 		 if(estado == 0 && unidad == ''){
 			 
 			 alert("Debe seleccionar una unidad");
 		 } else {
-		
+		 
 		 $.ajax({
 					method : "POST",
 					url : "php/guardar_empaquetado_mtd.php",
 					dataType : "json",
-					data : {unidad:unidad,estado:estado,seccion:seccion,accion:accion}
+					data : {unidad:unidad,estado:estado,seccion:seccion,accion:accion,sesion:sesion}
 				}).done(function(data){
 					
 					if(data.asignado == true){
@@ -85,6 +86,11 @@ var banIdentificador = false;
 								
 								 $("#agregar"+seccion).show();
 								 $("#quitar"+seccion).hide();
+								 
+								 $("#sesion"+seccion).val("").show();
+								 $("#sp"+seccion).text("").hide();
+								
+  								 
 							    }  else {
 								 
 								   texto.css("color","red").html('Se quit&oacute; correctamente');
@@ -103,9 +109,13 @@ var banIdentificador = false;
 								
 								 $("#agregar"+seccion).hide();
 								 $("#quitar"+seccion).show();
+								 
+								 $("#sesion"+seccion).val("").hide();
+								 $("#sp"+seccion).text(sesion).show();
 							 } else {
 								 
 								  texto.css("color","blue").html('Agregado correctamente');
+								  
 								  setTimeout(function(){
 										
 									  texto.html('');
@@ -158,29 +168,37 @@ $(function () {
 					dataType : "json",
 					data : {unidad:unidad,estado:estado}
 				}).done(function(data){
-					
+					console.log(data);
 					var banderaEncontrado;
+					
 					campoEstado.forEach(function(entry){
 					
 						banderaEncontrado = false;
 						
 						if(typeof(data.empaquetado) !='undefined'){						
+							
 							data.empaquetado.forEach(function(dato){
 								
 								if(entry == dato.fk_puesto){
 									banderaEncontrado = true;
-								 if(dato.activo == 1){
-								 $("#"+entry).css("color","blue");
-								 $("#"+entry).html('Asignado');
-								 $("#agregar"+entry).hide();
-								 $("#quitar"+entry).show();
-								 } else {
-								 $("#"+entry).css("color","red");
-								 $("#"+entry).html('Sin asignar');
-								 $("#quitar"+entry).hide();
-								 $("#agregar"+entry).show();
-									 
-								 }
+									 if(dato.activo == 1){
+										 $("#"+entry).css("color","blue");
+										 $("#"+entry).html('Asignado');
+										 $("#agregar"+entry).hide();
+										 $("#quitar"+entry).show();
+										 $("#sesion"+entry).val("").hide();
+										 $("#sp"+entry).text(dato.Session).show();
+										 
+									 } else {
+										 $("#"+entry).css("color","red");
+										 $("#"+entry).html('Sin asignar');
+										 $("#quitar"+entry).hide();
+										 $("#agregar"+entry).show();
+										 
+										 $("#sesion"+entry).val("").show();
+										 $("#sp"+entry).text("").hide();
+										 
+									 }
 								}
 							});
 						}
@@ -190,7 +208,11 @@ $(function () {
 							 $("#"+entry).html('Sin asignar');
 							 $("#quitar"+entry).hide();
 							 $("#agregar"+entry).show();
-								
+							 
+							 $("#sesion"+entry).val("").show();
+							 $("#sp"+entry).text("").hide();
+							 
+							
 							}
 				  
 					});
@@ -221,6 +243,8 @@ $(function () {
 				campoEstado.forEach(function(entry){
 					
 					$("#"+entry).html('');
+					 $("#sesion"+entry).val("").hide();
+					 $("#sp"+entry).text("").hide();
 				  
 				});
 			} else {

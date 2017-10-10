@@ -17,6 +17,8 @@
 			$estado = isset($_POST['estado']) ? $_POST['estado'] : 0;
 			$puesto = isset($_POST['seccion']) ? $_POST['seccion'] : 0;
 			$accion = isset($_POST['accion']) ? $_POST['accion'] : 0;
+			$sesion = isset($_POST['sesion']) ? $conn->real_escape_string($_POST['sesion']) : '';
+			error_log($sesion);
 			$unidadesSinEmpaquetar = '';
 			$banCreacionNuevo = false;
 			
@@ -24,6 +26,7 @@
 				
 				$sql="SELECT * FROM empaquetado as e, unidad as u where e.fk_unidad =u.pk_unidad && u.req_codigo={$unidad} && e.fk_puesto={$puesto};";
 				
+				//Verificamos si existe el registro de empaquetado si no lo creamos de la unidad
 				$resultado = $conn->query($sql);
 				
 				if ($resultado->num_rows != 1){
@@ -33,7 +36,7 @@
 					if ($resultado->num_rows == 1){
 						$resultados = $resultado->fetch_assoc();
 						
-						 $sql1 = "INSERT INTO empaquetado(fk_unidad,fk_puesto,activo)VALUES({$resultados['pk_unidad']},{$puesto},{$accion});";
+						 $sql1 = "INSERT INTO empaquetado(fk_unidad,fk_puesto,activo,Session)VALUES({$resultados['pk_unidad']},{$puesto},{$accion},'{$sesion}');";
 						
 						 $conn->query($sql1);
 							if ($conn->affected_rows == 1){
@@ -85,9 +88,17 @@
 				    $resultados = $result->fetch_assoc();
 					
 					 //Si existe el reguistro
-							 $fk_unidad = $estado == 1 ? "" : "fk_unidad ={$resultados['pk_unidad']}  &&";
+														 
 							 $empaquetado = $result->fetch_assoc();
-							 $sql = "UPDATE empaquetado set activo={$accion} where ".$fk_unidad." fk_puesto={$puesto};";
+							 if($estado == 1){
+								 $sql = "UPDATE empaquetado set activo={$accion} where  fk_puesto={$puesto};";
+								 
+							 } else {
+								 
+								 
+								 $sql = "UPDATE empaquetado set activo={$accion},Session='{$sesion}' where fk_unidad={$resultados['pk_unidad']} && fk_puesto={$puesto};";
+								 
+							 }
 							 $conn->query($sql);
 							 if ($conn->affected_rows > 0  || $banCreacionNuevo === true){
 							

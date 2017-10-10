@@ -82,6 +82,7 @@
 										<th>Nombre</th>
 										<th>Estado</th>
 										<th>Prioridad</th>
+										<th>Sesión</th>
 										<th>Agregar/Quitar</th>
 									  </tr>
 									</thead>
